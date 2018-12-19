@@ -47,7 +47,7 @@ module ttm_core_wrapper #(
 	DATA_WIDTH    = 32,
 	WIDTH_INT     = 2,
 	BATCH_SIZE    = 32,
-	BURST_SIZE    = 4,
+	BURST_SIZE    = 4, 
 	RANK_MAX      = 32
 )(	
 	input  wire clk,
