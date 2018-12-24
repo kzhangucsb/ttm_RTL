@@ -24,12 +24,12 @@ interface fifo_if #(parameter WIDTH = 32);
 	logic tready;
 	logic tlast;
 
-	modport rd (input  data, input  tvalid, output tready, input  tlast);
-	modport wr (output data, output tvalid, input  tready, output tlast);
+	modport slave  (input  data, input  tvalid, output tready, input  tlast);
+	modport master (output data, output tvalid, input  tready, output tlast);
 
 endinterface
 
-interface ram_if #(parameter DWIDTH=32, AWIDTH=32);
+interface ram_if #(parameter DWIDTH=32, AWIDTH=16);
 	logic [DWIDTH-1 : 0] dataw;
 	logic [DWIDTH-1 : 0] datar;
 	logic [AWIDTH-1 : 0] address;
@@ -37,6 +37,6 @@ interface ram_if #(parameter DWIDTH=32, AWIDTH=32);
 	logic rd;
 	logic datarvalid;
 
-	modport ram (input  dataw, output datar, input  address, input  wr, input  rd, output datarvalid);
-	modport sys (output dataw, input  datar, output address, output wr, output rd, input  datarvalid);
+	modport slave  (input  dataw, output datar, input  address, input  wr, input  rd, output datarvalid);
+	modport master (output dataw, input  datar, output address, output wr, output rd, input  datarvalid);
 endinterface : ram_if

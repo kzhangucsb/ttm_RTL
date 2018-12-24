@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+`timescale 1ns / 1ns
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -20,26 +20,6 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 
-`timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 12/13/2018 02:51:41 PM
-// Design Name: 
-// Module Name: ttm_core_wrap
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
-//////////////////////////////////////////////////////////////////////////////////
 
 
 module ttm_core_wrapper #(
@@ -64,6 +44,11 @@ module ttm_core_wrapper #(
 	output wire resvalid,
 	output wire reslast,
 	input  wire resready,
+	input  wire coeffwr,
+	input  wire coeffrd,
+	input  wire [RANK_MAX*DATA_WIDTH-1:0] coeffdataw,
+	output wire [RANK_MAX*DATA_WIDTH-1:0] coeffdatar,
+	input  wire [15:0]                    coeffadd,
 	input  wire mode
 );
 
@@ -80,6 +65,8 @@ module ttm_core_wrapper #(
 	) resfifoif();
 
 	ram_if #(
+		.DWIDTH(RANK_MAX*DATA_WIDTH),
+		.AWIDTH(16)
 	) coefframif();
 
 	assign tenfifoif.data   = tendata;
@@ -94,6 +81,11 @@ module ttm_core_wrapper #(
 	assign resvalid         = resfifoif.tvalid;
 	assign reslast          = resfifoif.tlast;
 	assign resfifoif.tready = resready;
+	assign coefframif.dataw = coeffdataw;
+	assign coefframif.address = coeffadd;
+	assign coefframif.wr    = coeffwr;
+	assign coefframif.rd    = coeffrd;
+	assign coeffdatar       = coefframif.datar;
 	
 	ttm_core #(
 		.DATA_WIDTH (DATA_WIDTH),
