@@ -47,14 +47,14 @@ module ttm_core #(
 	fifo_if #(
 		.WIDTH((BATCH_SIZE+RANK_MAX)*DATA_WIDTH)
 	) tenmat();
-	fifo_if #(
-		.WIDTH(RANK_MAX*DATA_WIDTH)
-	) res_prt();
+	// fifo_if #(
+	// 	.WIDTH(RANK_MAX*DATA_WIDTH)
+	// ) res_prt();
 
 	wire procvalid;
 	wire procpause;
 	reg  procvalid_1;
-	reg  tlast_1, tlast_2;
+	reg  tlast_1;// tlast_2;
 	wire [DATA_WIDTH-1:0] ten_int [BATCH_SIZE-1:0];
 	wire [DATA_WIDTH-1:0] mat_int [RANK_MAX-1:0];
 
@@ -90,9 +90,9 @@ module ttm_core #(
 			counter_burst <= 0;
 		end else begin
 			if (mode) begin
-				if (procvalid_1) begin
+				if (procvalid) begin
 					counter_burst <= (counter_burst + 1) % BURST_SIZE; 
-					if (tlast_1) begin
+					if (tenmat.tlast & procvalid) begin
 						counter_burst <= 0;
 					end
 				end
@@ -109,9 +109,9 @@ module ttm_core #(
 			if (mode) begin
 				counter_a1_scale <= 0;
 			end else begin
-				if (procvalid_1) begin
+				if (procvalid) begin
 					counter_a1_scale <= (counter_a1_scale + 1) % MAT_A1_SCALE;
-					if (tlast_1) begin
+					if (tenmat.tlast & procvalid) begin
 						counter_a1_scale <= 0;
 					end
 				end
@@ -144,12 +144,11 @@ module ttm_core #(
 		if(~rst_n) begin
 			procvalid_1 <= 0;
 			tlast_1 <= 0;
-			tlast_2 <= 0;
+			//tlast_2 <= 0;
 		end else begin
 			procvalid_1 <= procvalid;
-			tlast_1 <= (tenmat.tlast & procvalid) | procpause;
-			tlast_2 <= tlast_1 & ~procpause;
-			
+			tlast_1 <= (tenmat.tlast & procvalid) | (tlast_1 & procpause);// | procpause;
+			//tlast_2 <= tlast_1 & ~procpause;	
 		end
 	end
 
@@ -163,7 +162,7 @@ module ttm_core #(
 			for (int k = 0; k < MAT_A1_SCALE; k = k + 1) begin
 				for (int i = 0; i < BATCH_SIZE; i = i + 1) begin
 					for (int j = 0; j < RANK_MAX; j = j + 1) begin
-						mat_a1_r[k][i][j] <= 0; //18'h10000;
+						mat_a1_r[k][i][j] <= 0;//18'h10000;
 					end // for (int j = 0; j < RANK_MAX; j = j + 1)
 				end // for (int i = 0; i < BATCH_SIZE; i = i + 1)
 			end // for (int k = 0; k < MAT_A1_SCALE; k = k + 1)
@@ -206,12 +205,15 @@ module ttm_core #(
 
 	for (g = 0; g < BATCH_SIZE; g = g + 1) begin
 		for (h = 0; h < RANK_MAX; h = h + 1) begin
-			mult_gen_0 mult_inst(
-				.CLK(clk), 
+			xbip_multadd_0 mult_inst(
+				//.CLK(clk), 
 				.A(ten_int[g][DATA_WIDTH-1:DATA_WIDTH-27]), 
-				.B(mode ? $signed(mat_int[h][DATA_WIDTH-1:DATA_WIDTH-18]) : mat_a1_r[counter_a1_scale][g][h]),
-				.SCLR(~rst_n),
-				.P(prod_r[g][h])
+				.B(mode ? mat_int[h][DATA_WIDTH-1:DATA_WIDTH-18] : mat_a1_r[counter_a1_scale][g][h]),
+				.C(tlast_1 ? 0 : {res_reg[counter_burst][g][h], 11'h0}),
+				//.SCLR(~rst_n),
+				.SUBTRACT(0),
+				.P(prod_r[g][h]),
+				.PCOUT()
 			);
 		end // for (int h = 0; h < RANK_MAX; h = h + 1)
 	end // for (int g = 0; g < BATCH_SIZE; g = g + 1)
@@ -226,8 +228,8 @@ module ttm_core #(
 				end // for (int i = 0; i < BATCH_SIZE; i = i + 1)
 			end // for (int k = 0; k < BURST_SIZE; k = k + 1)
 		end else begin
-			if (procvalid_1) begin
-				if (tlast_2) begin
+			if (procvalid) begin
+				if (tlast_1) begin
 					for (int k = 0; k < BURST_SIZE; k = k + 1) begin
 						for (int i = 0; i < BATCH_SIZE; i = i + 1) begin
 							for (int j = 0; j < RANK_MAX; j = j + 1) begin
@@ -244,12 +246,12 @@ module ttm_core #(
 				else begin
 					for (int i = 0; i < BATCH_SIZE; i = i + 1) begin
 						for (int j = 0; j < RANK_MAX; j = j + 1) begin
-							res_reg[counter_burst][i][j] <= res_reg[counter_burst][i][j] + prod_r[i][j];
+							res_reg[counter_burst][i][j] <= prod_r[i][j]; // + res_reg[counter_burst][i][j] 
 						end // for (int j = 0; j < RANK_MAX; j = j + 1)
 					end // for (int i = 0; i < BATCH_SIZE; i = i + 1)
 				end
 			end // if (procvalid_1)
-			else if (tlast_2) begin
+			else if (tlast_1 & ~procpause) begin
 				for (int k = 0; k < BURST_SIZE; k = k + 1) begin
 					for (int i = 0; i < BATCH_SIZE; i = i + 1) begin
 						for (int j = 0; j < RANK_MAX; j = j + 1) begin
@@ -270,7 +272,7 @@ module ttm_core #(
 					end // for (int j = 0; j < RANK_MAX; j = j + 1)
 				end // for (int i = 0; i < BATCH_SIZE; i = i + 1)
 			end // for (int k = 0; k < BURST_SIZE; k = k + 1)
-		end else if (tlast_2) begin
+		end else if (tlast_1 & ~procpause) begin
 			for (int k = 0; k < BURST_SIZE; k = k + 1) begin
 				for (int i = 0; i < BATCH_SIZE; i = i + 1) begin
 					for (int j = 0; j < RANK_MAX; j = j + 1) begin
@@ -279,21 +281,49 @@ module ttm_core #(
 				end // for (int i = 0; i < BATCH_SIZE; i = i + 1)
 			end // for (int k = 0; k < BURST_SIZE; k = k + 1)
 		end
+		else if (~mode) begin
+			for (int k = 1; k < BURST_SIZE; k = k + 1) begin
+				for (int i = 0; i < BATCH_SIZE; i = i + 1) begin
+					for (int j = 0; j < RANK_MAX; j = j + 1) begin
+						res_reg_1[k][i][j] <= 0;
+					end // for (int j = 0; j < RANK_MAX; j = j + 1)
+				end // for (int i = 0; i < BATCH_SIZE; i = i + 1)
+			end // for (int k = 0; k < BURST_SIZE; k = k + 1)
+			if ((counter_output < 5) & (counter_output >= 0)) begin
+				for (int i = 0; i < BATCH_SIZE / 2; i = i + 1) begin
+					for (int j = 0; j < RANK_MAX; j = j + 1) begin
+						res_reg_1[0][i][j] <= res_reg_1[0][i*2][j] + res_reg_1[0][i*2+1][j];
+					end // for (int j = 0; j < RANK_MAX; j = j + 1)
+				end // for (int i = 0; i < BATCH_SIZE; i = i + 1)
+				for (int i = BATCH_SIZE / 2; i < BATCH_SIZE; i = i + 1) begin
+					for (int j = 0; j < RANK_MAX; j = j + 1) begin
+						res_reg_1[0][i][j] <= 0;
+					end // for (int j = 0; j < RANK_MAX; j = j + 1)
+				end // for (int i = 0; i < BATCH_SIZE; i = i + 1)
+			end // if ((counter_output < 5) & (counter_output >= 0))
+		end
 	end
 
 	always_ff @(posedge clk or negedge rst_n) begin : proc_counter_output
 		if(~rst_n) begin
 			counter_output <= -1;
 		end else begin
-			if (tlast_2) begin //TODO
+			if (tlast_1 & ~procpause) begin //TODO
 				counter_output <= 0;
 			end
 			else begin
-				if (counter_output >= 0 & res_prt.tready) begin
-					counter_output <= counter_output + 1;
-					if (mode & (counter_output == (BATCH_SIZE * BURST_SIZE -1))) begin
-						counter_output <= -1;
-					end else if ((~mode) & 	(counter_output == (BATCH_SIZE -1))) begin
+				if (mode) begin
+					if (counter_output >= 0 & res.tready) begin
+						counter_output <= counter_output + 1;
+						if (counter_output == (BATCH_SIZE * BURST_SIZE -1)) begin
+							counter_output <= -1;
+						end
+					end
+				end
+				else begin
+					if ((counter_output < 5) & (counter_output >= 0)) begin
+						counter_output <= counter_output + 1;
+					end	else if ((counter_output == 5) & res.tready) begin
 						counter_output <= -1;
 					end
 				end
@@ -302,65 +332,75 @@ module ttm_core #(
 	end
 
 	always_comb begin : proc_res_prt
-		if (counter_output >= 0) begin
-			// for (int t = 0; t < RANK_MAX; t = t + 1) begin
-			// 	res.data[(t+1)*DATA_WIDTH-1:t*DATA_WIDTH] = res_reg[counter_output/BATCH_SIZE][counter_output%BATCH_SIZE][t];	
-			// end // for (int t = 0; t < RANK_MAX; t = t + 1)
-			res_prt.tvalid = 1;
-			res_prt.tlast  = mode ? (counter_output == (BATCH_SIZE * BURST_SIZE -1)) : (counter_output == (BATCH_SIZE -1));
+		if (mode) begin 
+			if (counter_output >= 0) begin
+				// for (int t = 0; t < RANK_MAX; t = t + 1) begin
+				// 	res.data[(t+1)*DATA_WIDTH-1:t*DATA_WIDTH] = res_reg[counter_output/BATCH_SIZE][counter_output%BATCH_SIZE][t];	
+				// end // for (int t = 0; t < RANK_MAX; t = t + 1)
+				res.tvalid = 1;
+				res.tlast  = ((counter_output+1) % BURST_SIZE == 0);
+			end else begin
+				// res.data = 0;
+				res.tvalid = 0;
+				res.tlast  = 0;
+			end
 		end else begin
-			// res.data = 0;
-			res_prt.tvalid = 0;
-			res_prt.tlast  = 0;
+			if (counter_output == 5) begin
+				res.tvalid = 1;
+				res.tlast  = 1;
+			end else begin
+				res.tvalid = 0;
+				res.tlast  = 0;
+			end
 		end
 	end
 
 	for (g = 0; g < RANK_MAX; g = g + 1) begin
 		//assign res_prt.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] = (counter_output >= 0) ? res_reg_1[counter_output/BATCH_SIZE][counter_output%BATCH_SIZE][g] : 0;
-		assign res_prt.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] = (counter_output < 0) ? 0 : (mode ? res_reg_1[counter_output/BATCH_SIZE][g][counter_output%BATCH_SIZE] : res_reg_1[0][counter_output][g]);
+		assign res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] = (counter_output < 0) ? 0 : (mode ? res_reg_1[counter_output%BURST_SIZE][g][counter_output/BURST_SIZE] : res_reg_1[0][0][g]);
 	end
 
-	always_ff @(posedge clk or negedge rst_n) begin : proc_res_a1
-		if(~rst_n) begin
-			res_a1_valid <= 0;
-			res_a1_sum   <= 0;
-		end else begin
-			if (mode) begin
-				res_a1_valid <= 0;
-				res_a1_sum   <= 0;
-			end else begin 
-				if (res_prt.tlast & res_prt.tvalid) begin
-					res_a1_valid <= 1;
-				end 
-				else if (res.tready) begin
-					res_a1_valid <= 0;
-				end
-				if (res_a1_valid & res.tready) begin
-					res_a1_sum <= 0;
-				end else if (res_prt.tvalid & ~res_a1_valid) begin
-					res_a1_sum <= res_a1_sum_1;
-				end
-			end			
-		end
-	end
+	// always_ff @(posedge clk or negedge rst_n) begin : proc_res_a1
+	// 	if(~rst_n) begin
+	// 		res_a1_valid <= 0;
+	// 		res_a1_sum   <= 0;
+	// 	end else begin
+	// 		if (mode) begin
+	// 			res_a1_valid <= 0;
+	// 			res_a1_sum   <= 0;
+	// 		end else begin 
+	// 			if (res.tlast & res.tvalid) begin
+	// 				res_a1_valid <= 1;
+	// 			end 
+	// 			else if (res.tready) begin
+	// 				res_a1_valid <= 0;
+	// 			end
+	// 			if (res_a1_valid & res.tready) begin
+	// 				res_a1_sum <= 0;
+	// 			end else if (res.tvalid & ~res_a1_valid) begin
+	// 				res_a1_sum <= res_a1_sum_1;
+	// 			end
+	// 		end			
+	// 	end
+	// end
 
-	for (g = 0; g < RANK_MAX; g = g + 1) begin
-		assign res_a1_sum_1[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] = res_a1_sum[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] + res_prt.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH];
-	end // for (int g = 0; g < RANK_MAX; g = g + 1)
+	// for (g = 0; g < RANK_MAX; g = g + 1) begin
+	// 	assign res_a1_sum_1[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] = res_a1_sum[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] + res_prt.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH];
+	// end // for (int g = 0; g < RANK_MAX; g = g + 1)
 
-	always_comb begin : proc_res
-		if (mode) begin
-			res.data   = res_prt.data;
-			res.tvalid = res_prt.tvalid;
-			res.tlast  = res_prt.tlast;
-			res_prt.tready = res.tready;
-		end else begin
-			res.data   = res_a1_sum;
-			res.tvalid = res_a1_valid;
-			res.tlast  = 1;
-			res_prt.tready = ~res_a1_valid;
-		end // end else
-	end
+	// always_comb begin : proc_res
+	// 	if (mode) begin
+	// 		res.data   = res_prt.data;
+	// 		res.tvalid = res_prt.tvalid;
+	// 		res.tlast  = res_prt.tlast;
+	// 		res_prt.tready = res.tready;
+	// 	end else begin
+	// 		res.data   = res_a1_sum;
+	// 		res.tvalid = res_a1_valid;
+	// 		res.tlast  = 1;
+	// 		res_prt.tready = ~res_a1_valid;
+	// 	end // end else
+	// end
 	
 endmodule
 

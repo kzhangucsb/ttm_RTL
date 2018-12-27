@@ -1,4 +1,4 @@
-`timescale 1ns / 1ps
+`timescale 1ns / 1ns
 //////////////////////////////////////////////////////////////////////////////////
 // Company: 
 // Engineer: 
@@ -122,7 +122,7 @@ module ttm_core_tb #(
 		end
 	end
 
-	assign tenfifoif.tlast = ((tencnt+1)%4 == 0);
+	assign tenfifoif.tlast = ((tencnt+1)%32 == 0);
 	assign matfifoif.tlast = ((matcnt+1)%4 == 0);
 	//assign resfifoif.tready = 1;
 	assign mode = 1;
