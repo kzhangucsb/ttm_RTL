@@ -44,11 +44,13 @@ module ttm_core_wrapper #(
 	output wire resvalid,
 	output wire reslast,
 	input  wire resready,
+	input  wire coeffclk,
+	input  wire coeffrst,
 	input  wire coeffwr,
-	input  wire coeffrd,
+	input  wire coeffen,
 	input  wire [RANK_MAX*DATA_WIDTH-1:0] coeffdataw,
 	output wire [RANK_MAX*DATA_WIDTH-1:0] coeffdatar,
-	input  wire [15:0]                    coeffadd,
+	input  wire [7:0]                    coeffadd,
 	input  wire mode
 );
 
@@ -66,7 +68,7 @@ module ttm_core_wrapper #(
 
 	ram_if #(
 		.DWIDTH(RANK_MAX*DATA_WIDTH),
-		.AWIDTH(16)
+		.AWIDTH(8)
 	) coefframif();
 
 	assign tenfifoif.data   = tendata;
@@ -81,11 +83,16 @@ module ttm_core_wrapper #(
 	assign resvalid         = resfifoif.tvalid;
 	assign reslast          = resfifoif.tlast;
 	assign resfifoif.tready = resready;
+
+	assign coefframif.clk   = coeffclk;
+	assign coefframif.rst   = coeffrst;
 	assign coefframif.dataw = coeffdataw;
 	assign coefframif.address = coeffadd;
 	assign coefframif.wr    = coeffwr;
-	assign coefframif.rd    = coeffrd;
+	assign coefframif.en    = coeffen;
 	assign coeffdatar       = coefframif.datar;
+	
+
 	
 	ttm_core #(
 		.DATA_WIDTH (DATA_WIDTH),

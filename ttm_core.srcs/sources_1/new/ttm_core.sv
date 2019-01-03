@@ -157,8 +157,8 @@ module ttm_core #(
 		assign mat_a1.datar[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] = mat_a1_rd_r[g];
 	end
 
-	always_ff @(posedge clk) begin : proc_mat_a1_r
-		if(~rst_n) begin
+	always_ff @(posedge mat_a1.clk) begin : proc_mat_a1_r
+		if(mat_a1.rst) begin
 			for (int k = 0; k < MAT_A1_SCALE; k = k + 1) begin
 				for (int i = 0; i < BATCH_SIZE; i = i + 1) begin
 					for (int j = 0; j < RANK_MAX; j = j + 1) begin
@@ -167,7 +167,7 @@ module ttm_core #(
 				end // for (int i = 0; i < BATCH_SIZE; i = i + 1)
 			end // for (int k = 0; k < MAT_A1_SCALE; k = k + 1)
 		end else begin
-			if (mat_a1.wr) begin
+			if (mat_a1.wr & mat_a1.en) begin
 				for (int j = 0; j < RANK_MAX; j = j + 1) begin
 					mat_a1_r[mat_a1.address / BATCH_SIZE][mat_a1.address % BATCH_SIZE][j] <= mat_a1_wr_r[j];
 				end // for (int j = 0; j < RANK_MAX; j = j + 1)
@@ -176,11 +176,11 @@ module ttm_core #(
 	end
 
 	for (g = 0; g < RANK_MAX; g = g + 1) begin
-		always_ff @(posedge clk) begin : proc_mat_a1_datar
-			if(~rst_n) begin
+		always_ff @(posedge mat_a1.clk) begin : proc_mat_a1_datar
+			if(mat_a1.rst) begin
 				mat_a1_rd_r[g] <= 0;
 			end else begin
-				if (mat_a1.rd) begin
+				if (mat_a1.en) begin
 					mat_a1_rd_r[g] <= mat_a1_r[mat_a1.address / BATCH_SIZE][mat_a1.address % BATCH_SIZE][g];
 				end
 				else begin
@@ -190,18 +190,18 @@ module ttm_core #(
 		end
 	end
 
-	always_ff @(posedge clk) begin : proc_mat_a1_datar
-		if(~rst_n) begin
-			mat_a1.datarvalid <= 0;
-		end else begin
-			if (mat_a1.rd) begin
-				mat_a1.datarvalid <= 1;
-			end
-			else begin
-				mat_a1.datarvalid <= 0;
-			end
-		end
-	end
+	// always_ff @(posedge clk) begin : proc_mat_a1_datar
+	// 	if(~rst_n) begin
+	// 		mat_a1.datarvalid <= 0;
+	// 	end else begin
+	// 		if (mat_a1.rd) begin
+	// 			mat_a1.datarvalid <= 1;
+	// 		end
+	// 		else begin
+	// 			mat_a1.datarvalid <= 0;
+	// 		end
+	// 	end
+	// end
 
 	for (g = 0; g < BATCH_SIZE; g = g + 1) begin
 		for (h = 0; h < RANK_MAX; h = h + 1) begin

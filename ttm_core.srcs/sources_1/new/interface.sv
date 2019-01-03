@@ -30,13 +30,15 @@ interface fifo_if #(parameter WIDTH = 32);
 endinterface
 
 interface ram_if #(parameter DWIDTH=32, AWIDTH=16);
+	logic clk;
+	logic rst;
 	logic [DWIDTH-1 : 0] dataw;
 	logic [DWIDTH-1 : 0] datar;
 	logic [AWIDTH-1 : 0] address;
 	logic wr;
-	logic rd;
-	logic datarvalid;
+	logic en;
+	//logic datarvalid;
 
-	modport slave  (input  dataw, output datar, input  address, input  wr, input  rd, output datarvalid);
-	modport master (output dataw, input  datar, output address, output wr, output rd, input  datarvalid);
+	modport slave  (input  clk, input  rst, input  dataw, output datar, input  address, input  wr, input  en);
+	modport master (output clk, output rst, output dataw, input  datar, output address, output wr, output en);
 endinterface : ram_if
