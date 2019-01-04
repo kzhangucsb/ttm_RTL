@@ -1,4 +1,4 @@
-// (c) Copyright 1995-2018 Xilinx, Inc. All rights reserved.
+// (c) Copyright 1995-2019 Xilinx, Inc. All rights reserved.
 // 
 // This file contains confidential and proprietary information
 // of Xilinx, Inc. and is protected under U.S. and
@@ -46,24 +46,24 @@
 // 
 // DO NOT MODIFY THIS FILE.
 
-// IP VLNV: xilinx.com:ip:mult_gen:12.0
-// IP Revision: 14
+// IP VLNV: xilinx.com:ip:dist_mem_gen:8.0
+// IP Revision: 12
 
 // The following must be inserted into your Verilog file for this
 // core to be instantiated. Change the instance name and port connections
 // (in parentheses) to your own signal names.
 
 //----------- Begin Cut here for INSTANTIATION Template ---// INST_TAG
-mult_gen_0 your_instance_name (
-  .CLK(CLK),    // input wire CLK
-  .A(A),        // input wire [26 : 0] A
-  .B(B),        // input wire [17 : 0] B
-  .SCLR(SCLR),  // input wire SCLR
-  .P(P)        // output wire [31 : 0] P
+dist_mem_gen_w18 your_instance_name (
+  .a(a),      // input wire [3 : 0] a
+  .d(d),      // input wire [17 : 0] d
+  .clk(clk),  // input wire clk
+  .we(we),    // input wire we
+  .spo(spo)  // output wire [17 : 0] spo
 );
 // INST_TAG_END ------ End INSTANTIATION Template ---------
 
-// You must compile the wrapper file mult_gen_0.v when simulating
-// the core, mult_gen_0. When compiling the wrapper file, be sure to
+// You must compile the wrapper file dist_mem_gen_w18.v when simulating
+// the core, dist_mem_gen_w18. When compiling the wrapper file, be sure to
 // reference the Verilog simulation library.
 

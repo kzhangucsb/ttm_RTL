@@ -27,7 +27,7 @@ module ttm_core_wrapper #(
 	DATA_WIDTH    = 32,
 	WIDTH_INT     = 2,
 	BATCH_SIZE    = 32,
-	BURST_SIZE    = 4, 
+	//BURST_SIZE    = 4, 
 	RANK_MAX      = 32
 )(	
 	input  wire clk,
@@ -50,7 +50,8 @@ module ttm_core_wrapper #(
 	input  wire coeffen,
 	input  wire [RANK_MAX*DATA_WIDTH-1:0] coeffdataw,
 	output wire [RANK_MAX*DATA_WIDTH-1:0] coeffdatar,
-	input  wire [7:0]                    coeffadd,
+	input  wire [8:0]                     coeffadd,
+	input  wire [4:0]                     burst_size,
 	input  wire mode
 );
 
@@ -68,7 +69,7 @@ module ttm_core_wrapper #(
 
 	ram_if #(
 		.DWIDTH(RANK_MAX*DATA_WIDTH),
-		.AWIDTH(8)
+		.AWIDTH(9)
 	) coefframif();
 
 	assign tenfifoif.data   = tendata;
@@ -98,12 +99,13 @@ module ttm_core_wrapper #(
 		.DATA_WIDTH (DATA_WIDTH),
 		.WIDTH_INT  (WIDTH_INT ),		
 		.BATCH_SIZE (BATCH_SIZE),
-		.BURST_SIZE (BURST_SIZE),		
+		//.BURST_SIZE (BURST_SIZE),		
 		.RANK_MAX   (RANK_MAX  )	
 	) ttm_core_inst (	
 		.clk(clk),
 		.rst_n(rst_n),
 		.mode(mode),
+		.burst_size(burst_size),
 		.ten(tenfifoif),
 		.mat(matfifoif),
 		.res(resfifoif),

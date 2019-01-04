@@ -1,4 +1,4 @@
--- (c) Copyright 1995-2018 Xilinx, Inc. All rights reserved.
+-- (c) Copyright 1995-2019 Xilinx, Inc. All rights reserved.
 -- 
 -- This file contains confidential and proprietary information
 -- of Xilinx, Inc. and is protected under U.S. and
@@ -46,19 +46,19 @@
 -- 
 -- DO NOT MODIFY THIS FILE.
 
--- IP VLNV: xilinx.com:ip:mult_gen:12.0
--- IP Revision: 14
+-- IP VLNV: xilinx.com:ip:dist_mem_gen:8.0
+-- IP Revision: 12
 
 -- The following code must appear in the VHDL architecture header.
 
 ------------- Begin Cut here for COMPONENT Declaration ------ COMP_TAG
-COMPONENT mult_gen_0
+COMPONENT dist_mem_gen_w18
   PORT (
-    CLK : IN STD_LOGIC;
-    A : IN STD_LOGIC_VECTOR(26 DOWNTO 0);
-    B : IN STD_LOGIC_VECTOR(17 DOWNTO 0);
-    SCLR : IN STD_LOGIC;
-    P : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+    a : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+    d : IN STD_LOGIC_VECTOR(17 DOWNTO 0);
+    clk : IN STD_LOGIC;
+    we : IN STD_LOGIC;
+    spo : OUT STD_LOGIC_VECTOR(17 DOWNTO 0)
   );
 END COMPONENT;
 -- COMP_TAG_END ------ End COMPONENT Declaration ------------
@@ -67,17 +67,17 @@ END COMPONENT;
 -- body. Substitute your own instance name and net names.
 
 ------------- Begin Cut here for INSTANTIATION Template ----- INST_TAG
-your_instance_name : mult_gen_0
+your_instance_name : dist_mem_gen_w18
   PORT MAP (
-    CLK => CLK,
-    A => A,
-    B => B,
-    SCLR => SCLR,
-    P => P
+    a => a,
+    d => d,
+    clk => clk,
+    we => we,
+    spo => spo
   );
 -- INST_TAG_END ------ End INSTANTIATION Template ---------
 
--- You must compile the wrapper file mult_gen_0.vhd when simulating
--- the core, mult_gen_0. When compiling the wrapper file, be sure to
+-- You must compile the wrapper file dist_mem_gen_w18.vhd when simulating
+-- the core, dist_mem_gen_w18. When compiling the wrapper file, be sure to
 -- reference the VHDL simulation library.
 

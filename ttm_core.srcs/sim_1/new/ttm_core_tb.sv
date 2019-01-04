@@ -32,6 +32,7 @@ module ttm_core_tb #(
 	reg clk, rst_n;
 	reg mode;
 	int tencnt, matcnt;
+	int burst_size;
 
 	fifo_if #(
 		.WIDTH(BATCH_SIZE*DATA_WIDTH)
@@ -59,6 +60,7 @@ module ttm_core_tb #(
 		.clk(clk),
 		.rst_n(rst_n),
 		.mode(mode),
+		.burst_size(burst_size),
 		.ten(tenfifoif),
 		.mat(matfifoif),
 		.res(resfifoif),
@@ -90,7 +92,7 @@ module ttm_core_tb #(
 		resfifoif.tready = 0;
 		# 30 resfifoif.tready = 1;
 		while(1)
-			#600 resfifoif.tready = ~resfifoif.tready;
+			#1200 resfifoif.tready = ~resfifoif.tready;
 	end
 
 	always_ff @(posedge clk or negedge rst_n) begin : proc_ten
@@ -122,8 +124,9 @@ module ttm_core_tb #(
 		end
 	end
 
-	assign tenfifoif.tlast = ((tencnt+1)%32 == 0);
+	assign tenfifoif.tlast = ((tencnt+1)%4 == 0);
 	assign matfifoif.tlast = ((matcnt+1)%4 == 0);
 	//assign resfifoif.tready = 1;
+	assign burst_size = 4;
 	assign mode = 1;
 endmodule
