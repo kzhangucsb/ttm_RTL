@@ -94,27 +94,40 @@ module ttm_core #(
 		.fo(tenmat)
 	);
 
-	always_comb begin : proc_counter_burst_i
-		if (mode) begin
-			if (procvalid) begin
-				counter_burst_i = counter_burst + 1; 
-				if ((tenmat.tlast & procvalid) | (counter_burst >= burst_size - 1))begin
-					counter_burst_i = 0;
-				end
-			end
-			else begin
-				counter_burst_i = counter_burst;
-			end
-		end else begin
-			counter_burst_i = 0;
-		end 
-	end
+	// always_comb begin : proc_counter_burst_i
+	// 	if (mode) begin
+	// 		if (procvalid) begin
+	// 			counter_burst_i = counter_burst + 1; 
+	// 			if ((tenmat.tlast & procvalid) | (counter_burst >= burst_size - 1))begin
+	// 				counter_burst_i = 0;
+	// 			end
+	// 		end
+	// 		else begin
+	// 			counter_burst_i = counter_burst;
+	// 		end
+	// 	end else begin
+	// 		counter_burst_i = 0;
+	// 	end 
+	// end
+
+	// always_ff @(posedge clk or negedge rst_n) begin : proc_counter_burst
+	// 	if(~rst_n) begin
+	// 		counter_burst <= 0;
+	// 	end else begin
+	// 		counter_burst <= counter_burst_i;
+	// 	end
+	// end
 
 	always_ff @(posedge clk or negedge rst_n) begin : proc_counter_burst
 		if(~rst_n) begin
 			counter_burst <= 0;
 		end else begin
-			counter_burst <= counter_burst_i;
+			if (procvalid) begin
+				counter_burst <= counter_burst + 1; 
+				if ((tenmat.tlast & procvalid) | (counter_burst >= burst_size - 1))begin
+					counter_burst <= 0;
+				end
+			end
 		end
 	end
 
@@ -201,7 +214,7 @@ module ttm_core #(
 			// 	.qdpo(mat_a1_i[g][h])
 			// );
 			dist_mem_gen_w18 dist_mem_mat_a1(
-				.a(mat_a1.en ? (mat_a1.address / BATCH_SIZE) : counter_burst),
+				.a(mat_a1.en ? (mat_a1.address / BATCH_SIZE) : (mode ? 0 : counter_burst)),
 				.d({mat_a1_wr_r[h][DATA_WIDTH-1:DATA_WIDTH-17], 1'h1}),
 				.clk(mat_a1.clk),
 				.we((mat_a1.address % BATCH_SIZE == g) & mat_a1.wr & mat_a1.en),
@@ -220,7 +233,7 @@ module ttm_core #(
 			);
 	
 			dist_mem_gen_w32 dist_mem_res_ping(
-				.a(ping ? counter_burst : counter_output_b), 
+				.a(ping ? (mode ? counter_burst : 0) : counter_output_b), 
 				.d(ping ? prod_r[g][h] : (mode ? 0 : res_sum[g][h])),
 				.clk(clk), 
 				.we(ping ? procvalid : res_ud[h]), 
@@ -228,7 +241,7 @@ module ttm_core #(
 			);
 
 			dist_mem_gen_w32 dist_mem_res_pong(
-				.a(~ping ? counter_burst : counter_output_b), 
+				.a(~ping ? (mode ? counter_burst : 0) : counter_output_b), 
 				.d(~ping ? prod_r[g][h] : (mode ? 0 : res_sum[g][h])), 
 				.clk(clk), 
 				.we(~ping ? procvalid : res_ud[h]), 
@@ -255,7 +268,7 @@ module ttm_core #(
 			if (mode) begin
 				res_ud[h] = (counter_output_a == h) & res.tready;
 			end else begin
-				res_ud[h] = (counter_output_a >= 0) & (counter_output_a < 5);
+				res_ud[h] = (counter_output_a >= 0) & (counter_output_a < 4);
 			end
 		end
 	end
@@ -267,17 +280,18 @@ module ttm_core #(
 			ping <= 1;
 		end else begin
 			//if (tlast_1 & ~procpause) begin 
-			if (tenmat.tlast) begin
-				if (counter_output_a < 0) begin
+
+			if (counter_output_a < 0) begin
+				if (tenmat.tlast) begin
 					counter_output_a <= 0;
 					ping <= ~ping;
-				end else begin
+				end
+			end else begin // (counter_output_a >= 0)
+				if (tenmat.tlast) begin
 					procpause <= 1;
 				end
-			end
-			else begin
 				if (mode) begin
-					if (counter_output_a >= 0 & (counter_output_b >= burst_size - 1) & res.tready) begin
+					if ((counter_output_b >= burst_size - 1) & res.tready) begin
 						counter_output_a <= counter_output_a + 1;
 						if (counter_output_a == RANK_MAX -1) begin
 							if (procpause) begin
@@ -289,11 +303,10 @@ module ttm_core #(
 							end
 						end
 					end
-				end
-				else begin
-					if ((counter_output_a < 5) & (counter_output_a >= 0)) begin
+				end else begin
+					if (counter_output_a < 4) begin
 						counter_output_a <= counter_output_a + 1;
-					end	else if ((counter_output_a == 5) & res.tready) begin
+					end	else if (res.tready) begin // (counter_output_a == 4)
 						if (procpause) begin
 							procpause <= 0;
 							ping <= ~ping;
@@ -336,7 +349,7 @@ module ttm_core #(
 				res.tlast  = 0;
 			end
 		end else begin
-			if (counter_output_a == 5) begin
+			if (counter_output_a == 4) begin
 				res.tvalid = 1;
 				res.tlast  = 1;
 			end else begin
@@ -359,9 +372,9 @@ module ttm_core #(
 				end
 			end else begin
 				if (ping) begin
-					res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] = res_pong[0][g];
+					res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] = res_pong[0][g] + res_pong[1][g];
 				end else begin
-					res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] = res_ping[0][g];
+					res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] = res_ping[0][g] + res_ping[1][g];
 				end
 			end // end else
 		end

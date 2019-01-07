@@ -50,7 +50,7 @@ module ttm_core_wrapper #(
 	input  wire coeffen,
 	input  wire [RANK_MAX*DATA_WIDTH-1:0] coeffdataw,
 	output wire [RANK_MAX*DATA_WIDTH-1:0] coeffdatar,
-	input  wire [8:0]                     coeffadd,
+	input  wire [15:0]                    coeffadd,
 	input  wire [4:0]                     burst_size,
 	input  wire mode
 );
@@ -88,7 +88,7 @@ module ttm_core_wrapper #(
 	assign coefframif.clk   = coeffclk;
 	assign coefframif.rst   = coeffrst;
 	assign coefframif.dataw = coeffdataw;
-	assign coefframif.address = coeffadd;
+	assign coefframif.address = coeffadd[15:7];
 	assign coefframif.wr    = coeffwr;
 	assign coefframif.en    = coeffen;
 	assign coeffdatar       = coefframif.datar;
