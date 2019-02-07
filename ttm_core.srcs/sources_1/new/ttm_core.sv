@@ -41,11 +41,15 @@ module ttm_core #(
 	
 	genvar g, h;
 	
-	reg signed [3:0] counter_burst;
-	reg signed [3:0] counter_burst_i;
+	reg signed [3:0] counter_burst_a;
+	reg signed [3:0] counter_burst_ai;
+	reg signed [3:0] counter_burst_b;
+	reg signed [3:0] counter_burst_bi;
 	//reg signed [15:0] counter_a1_scale;
 	reg signed [15:0] counter_output_a;
 	reg signed [3:0] counter_output_b;
+
+	reg mat_a1_en_r;
 
 	fifo_if #(
 		.WIDTH((BATCH_SIZE+RANK_MAX)*DATA_WIDTH)
@@ -62,7 +66,6 @@ module ttm_core #(
 	wire [DATA_WIDTH-1:0] mat_int [RANK_MAX-1:0];
 
 	wire [DATA_WIDTH-1:0] mat_a1_wr_r [RANK_MAX-1:0];
-	reg  [DATA_WIDTH-1:0] mat_a1_rd_r [RANK_MAX-1:0];
 	wire [17:0] mat_a1_i [BATCH_SIZE-1:0][RANK_MAX-1:0];
 
 	//reg  [44:0] prod_l [BATCH_SIZE-1:0][RANK_MAX-1:0];
@@ -94,56 +97,54 @@ module ttm_core #(
 		.fo(tenmat)
 	);
 
-	// always_comb begin : proc_counter_burst_i
-	// 	if (mode) begin
-	// 		if (procvalid) begin
-	// 			counter_burst_i = counter_burst + 1; 
-	// 			if ((tenmat.tlast & procvalid) | (counter_burst >= burst_size - 1))begin
-	// 				counter_burst_i = 0;
-	// 			end
-	// 		end
-	// 		else begin
-	// 			counter_burst_i = counter_burst;
-	// 		end
-	// 	end else begin
-	// 		counter_burst_i = 0;
-	// 	end 
-	// end
 
-	// always_ff @(posedge clk or negedge rst_n) begin : proc_counter_burst
-	// 	if(~rst_n) begin
-	// 		counter_burst <= 0;
-	// 	end else begin
-	// 		counter_burst <= counter_burst_i;
-	// 	end
-	// end
 
-	always_ff @(posedge clk or negedge rst_n) begin : proc_counter_burst
-		if(~rst_n) begin
-			counter_burst <= 0;
-		end else begin
+	always_comb begin: counter_burst_i
+		if (mode) begin
+			counter_burst_bi = 0; 
 			if (procvalid) begin
-				counter_burst <= counter_burst + 1; 
-				if ((tenmat.tlast & procvalid) | (counter_burst >= burst_size - 1))begin
-					counter_burst <= 0;
+				counter_burst_ai = counter_burst_a + 1; 
+				if ((tenmat.tlast & procvalid) | (counter_burst_a >= burst_size - 1))begin
+					counter_burst_ai = 0;
 				end
+			end else begin
+				counter_burst_ai = counter_burst_a;
+			end
+		end else begin
+			counter_burst_ai = 0; 
+			if (procvalid) begin
+				counter_burst_bi = counter_burst_b + 1; 
+				if ((tenmat.tlast & procvalid) | (counter_burst_b >= burst_size - 1))begin
+					counter_burst_bi = 0;
+				end
+			end else begin
+				counter_burst_bi = counter_burst_b;
 			end
 		end
 	end
 
+	always_ff @(posedge clk or negedge rst_n) begin : proc_counter_burst
+		if(~rst_n) begin
+			counter_burst_a <= 0;
+			counter_burst_b <= 0;
+		end else begin
+			counter_burst_a <= counter_burst_ai;
+			counter_burst_b <= counter_burst_bi;
+		end
+	end
 
-	assign tenmat.tready = (~procpause) & ~(~mode & mat_a1.en); 
+	always_ff @(posedge clk or negedge rst_n) begin : proc_mat_a1_en_r
+		if(~rst_n) begin
+			mat_a1_en_r <= 0;
+		end else begin
+			mat_a1_en_r <= mat_a1.en;
+		end
+	end
+
+
+
+	assign tenmat.tready = (~procpause) & ~(~mode & mat_a1_en_r); 
 	assign procvalid = tenmat.tvalid & tenmat.tready;
-	//assign procpause = tlast_1 & (counter_output_a >= 0); 
-
-	// always_comb begin : proc_ten_n_mat
-	// 	for (int i = 0; i < RANK_MAX; i = i + 1) begin
-	// 		mat_int[i] = tenmat.data[(i+1)*DATA_WIDTH-1: i*DATA_WIDTH];
-	// 	end
-	// 	for (int i = 0; i < BATCH_SIZE; i = i + 1) begin
-	// 		ten_int[i] = tenmat.data[(i+1+RANK_MAX)*DATA_WIDTH-1: (i+RANK_MAX)*DATA_WIDTH];
-	// 	end
-	// end
 	
 
 	for (g = 0; g < RANK_MAX; g = g + 1) begin
@@ -165,7 +166,7 @@ module ttm_core #(
 			if (tenmat.tlast & procvalid) begin
 				tlast_2 <= 1;
 			end
-			else if (mode & (counter_burst >= burst_size - 1)) begin
+			else if (mode & (counter_burst_a >= burst_size - 1)) begin
 				tlast_2 <= 0;
 			end
 			else if (~mode & procvalid) begin
@@ -174,51 +175,19 @@ module ttm_core #(
 		end
 	end
 
-	// always_comb begin : proc_ping
-	// 	if (tlast_1 & ~procpause) begin
-	// 		ping = ~ping_r;
-	// 	end else begin
-	// 		ping = ping_r;
-	// 	end
-	// end
-
-	// always_ff @(posedge clk or negedge rst_n) begin : proc_ping_r
-	// 	if(~rst_n) begin
-	// 		ping_r <= 1;
-	// 	end else begin
-	// 		ping_r <= ping;
-	// 	end
-	// end
-
 	for (h = 0; h < RANK_MAX; h = h + 1) begin
 		assign mat_a1_wr_r[h] = mat_a1.dataw[(h+1)*DATA_WIDTH-1:h*DATA_WIDTH];
-		//assign mat_a1.datar[(h+1)*DATA_WIDTH-1:h*DATA_WIDTH] = mat_a1_rd_r[h];
-		always_ff @(posedge mat_a1.clk or posedge mat_a1.rst) begin : proc_mat_a1_datar
-			if(mat_a1.rst) begin
-				mat_a1.datar[(h+1)*DATA_WIDTH-1:h*DATA_WIDTH] <= 0;
-			end else begin
-				mat_a1.datar[(h+1)*DATA_WIDTH-1:h*DATA_WIDTH] <= {mat_a1_i[mat_a1.address % BATCH_SIZE][h], {(DATA_WIDTH-18){1'h0}}};
-			end
-		end
+		assign mat_a1.datar[(h+1)*DATA_WIDTH-1:h*DATA_WIDTH] = {mat_a1_i[mat_a1.address % BATCH_SIZE][h], {(DATA_WIDTH-18){1'h0}}};
 	end
 
 	for (g = 0; g < BATCH_SIZE; g = g + 1) begin
 		for (h = 0; h < RANK_MAX; h = h + 1) begin 
-			// dist_mem_gen_w18 dist_mem_mat_a1(
-			// 	.a(mat_a1.address / BATCH_SIZE), 
-			// 	.d(mat_a1_wr_r[h]), 
-			// 	.dpra(counter_burst_i), 
-			// 	.clk(clk), 
-			// 	.we((mat_a1.address % BATCH_SIZE == g) & mat_a1.wr & mat_a1.en), 
-			// 	.qspo(mat_a1_rd_r[h]), 
-			// 	.qdpo(mat_a1_i[g][h])
-			// );
 			dist_mem_gen_w18 dist_mem_mat_a1(
-				.a(mat_a1.en ? (mat_a1.address / BATCH_SIZE) : (mode ? 0 : counter_burst)),
+				.a(mat_a1.en ? (mat_a1.address / BATCH_SIZE) : counter_burst_bi),
 				.d({mat_a1_wr_r[h][DATA_WIDTH-1:DATA_WIDTH-17], 1'h1}),
 				.clk(mat_a1.clk),
 				.we((mat_a1.address % BATCH_SIZE == g) & mat_a1.wr & mat_a1.en),
-				.spo(mat_a1_i[g][h])
+				.qspo(mat_a1_i[g][h])
 			);
 	
 			xbip_multadd_0 mult_inst(
@@ -233,16 +202,16 @@ module ttm_core #(
 			);
 	
 			dist_mem_gen_w32 dist_mem_res_ping(
-				.a(ping ? (mode ? counter_burst : 0) : counter_output_b), 
-				.d(ping ? prod_r[g][h] : (mode ? 0 : res_sum[g][h])),
+				.a(ping ? counter_burst_a : counter_output_b), 
+				.d(ping ? prod_r[g][h] : res_sum[g][h]),
 				.clk(clk), 
 				.we(ping ? procvalid : res_ud[h]), 
 				.spo(res_ping[g][h])
 			);
 
 			dist_mem_gen_w32 dist_mem_res_pong(
-				.a(~ping ? (mode ? counter_burst : 0) : counter_output_b), 
-				.d(~ping ? prod_r[g][h] : (mode ? 0 : res_sum[g][h])), 
+				.a(~ping ? counter_burst_a : counter_output_b), 
+				.d(~ping ? prod_r[g][h] : res_sum[g][h]), 
 				.clk(clk), 
 				.we(~ping ? procvalid : res_ud[h]), 
 				.spo(res_pong[g][h])
@@ -266,7 +235,7 @@ module ttm_core #(
 	for (h = 0; h < RANK_MAX; h = h + 1) begin 
 		always_comb begin
 			if (mode) begin
-				res_ud[h] = (counter_output_a == h) & res.tready;
+				res_ud[h] = 0;//(counter_output_a == h) & res.tready;
 			end else begin
 				res_ud[h] = (counter_output_a >= 0) & (counter_output_a < 4);
 			end
@@ -371,11 +340,12 @@ module ttm_core #(
 					res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] = res_ping[g][counter_output_a];
 				end
 			end else begin
-				if (ping) begin
-					res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] = res_pong[0][g] + res_pong[1][g];
-				end else begin
-					res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] = res_ping[0][g] + res_ping[1][g];
-				end
+				res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] = res_sum[0][g];
+				// if (ping) begin
+				// 	res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] = res_pong[0][g] + res_pong[1][g];
+				// end else begin
+				// 	res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] = res_ping[0][g] + res_ping[1][g];
+				// end
 			end // end else
 		end
 	end
