@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="300000000fs"></ZoomStartTime>
-      <ZoomEndTime time="1753000001fs"></ZoomEndTime>
-      <Cursor1Time time="1375000000fs"></Cursor1Time>
+      <ZoomStartTime time="5313910000fs"></ZoomStartTime>
+      <ZoomEndTime time="5792410001fs"></ZoomEndTime>
+      <Cursor1Time time="5665000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="175"></NameColumnWidth>
-      <ValueColumnWidth column_width="142"></ValueColumnWidth>
+      <ValueColumnWidth column_width="138"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="39" />
+   <WVObjectSize size="38" />
    <wvobject type="logic" fp_name="/ttm_core_tb/clk">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -44,6 +44,8 @@
    <wvobject type="logic" fp_name="/ttm_core_tb/tenfifoif/tvalid">
       <obj_property name="ElementShortName">tvalid</obj_property>
       <obj_property name="ObjectShortName">tvalid</obj_property>
+      <obj_property name="CustomSignalColor">#800000</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/ttm_core_tb/tenfifoif/tready">
       <obj_property name="ElementShortName">tready</obj_property>
@@ -74,6 +76,22 @@
       <obj_property name="ElementShortName">tlast</obj_property>
       <obj_property name="ObjectShortName">tlast</obj_property>
    </wvobject>
+   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/ten_int">
+      <obj_property name="ElementShortName">ten_int[31:0][31:0]</obj_property>
+      <obj_property name="ObjectShortName">ten_int[31:0][31:0]</obj_property>
+      <obj_property name="Radix">REALRADIX</obj_property>
+      <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
+      <obj_property name="radix_fractionWidth">16</obj_property>
+      <obj_property name="radix_otherWidth">0</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/mat_int">
+      <obj_property name="ElementShortName">mat_int[31:0][31:0]</obj_property>
+      <obj_property name="ObjectShortName">mat_int[31:0][31:0]</obj_property>
+      <obj_property name="Radix">REALRADIX</obj_property>
+      <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
+      <obj_property name="radix_fractionWidth">16</obj_property>
+      <obj_property name="radix_otherWidth">0</obj_property>
+   </wvobject>
    <wvobject type="logic" fp_name="/ttm_core_tb/ttm_core_inst/tenmat/tvalid">
       <obj_property name="ElementShortName">tvalid</obj_property>
       <obj_property name="ObjectShortName">tvalid</obj_property>
@@ -86,10 +104,6 @@
       <obj_property name="ElementShortName">tlast</obj_property>
       <obj_property name="ObjectShortName">tlast</obj_property>
    </wvobject>
-   <wvobject type="logic" fp_name="/ttm_core_tb/ttm_core_inst/tlast_1">
-      <obj_property name="ElementShortName">tlast_1</obj_property>
-      <obj_property name="ObjectShortName">tlast_1</obj_property>
-   </wvobject>
    <wvobject type="logic" fp_name="/ttm_core_tb/ttm_core_inst/tlast_2">
       <obj_property name="ElementShortName">tlast_2</obj_property>
       <obj_property name="ObjectShortName">tlast_2</obj_property>
@@ -98,6 +112,8 @@
       <obj_property name="ElementShortName">data[1023:0]</obj_property>
       <obj_property name="ObjectShortName">data[1023:0]</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
+      <obj_property name="CustomSignalColor">#800080</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/ttm_core_tb/resfifoif/tvalid">
       <obj_property name="ElementShortName">tvalid</obj_property>
@@ -123,77 +139,76 @@
       <obj_property name="ElementShortName">procvalid_1</obj_property>
       <obj_property name="ObjectShortName">procvalid_1</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/counter_burst">
-      <obj_property name="ElementShortName">counter_burst[31:0]</obj_property>
-      <obj_property name="ObjectShortName">counter_burst[31:0]</obj_property>
-      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/counter_output">
-      <obj_property name="ElementShortName">counter_output[31:0]</obj_property>
-      <obj_property name="ObjectShortName">counter_output[31:0]</obj_property>
-      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
-   </wvobject>
    <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/ten_int">
       <obj_property name="ElementShortName">ten_int[31:0][31:0]</obj_property>
       <obj_property name="ObjectShortName">ten_int[31:0][31:0]</obj_property>
-      <obj_property name="Radix">HEXRADIX</obj_property>
+      <obj_property name="Radix">REALRADIX</obj_property>
       <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
-      <obj_property name="radix_fractionWidth">30</obj_property>
+      <obj_property name="radix_fractionWidth">16</obj_property>
       <obj_property name="radix_otherWidth">0</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/mat_int">
       <obj_property name="ElementShortName">mat_int[31:0][31:0]</obj_property>
       <obj_property name="ObjectShortName">mat_int[31:0][31:0]</obj_property>
-      <obj_property name="Radix">HEXRADIX</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/prod_l">
-      <obj_property name="ElementShortName">prod_l[31:0][31:0][44:0]</obj_property>
-      <obj_property name="ObjectShortName">prod_l[31:0][31:0][44:0]</obj_property>
-      <obj_property name="Radix">BINARYRADIX</obj_property>
+      <obj_property name="Radix">REALRADIX</obj_property>
+      <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
+      <obj_property name="radix_fractionWidth">16</obj_property>
+      <obj_property name="radix_otherWidth">0</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/prod_r">
       <obj_property name="ElementShortName">prod_r[31:0][31:0][31:0]</obj_property>
       <obj_property name="ObjectShortName">prod_r[31:0][31:0][31:0]</obj_property>
-      <obj_property name="Radix">BINARYRADIX</obj_property>
+      <obj_property name="Radix">REALRADIX</obj_property>
+      <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
+      <obj_property name="radix_fractionWidth">16</obj_property>
+      <obj_property name="radix_otherWidth">0</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/res_reg[0]">
-      <obj_property name="ElementShortName">[0][31:0][31:0][31:0]</obj_property>
-      <obj_property name="ObjectShortName">[0][31:0][31:0][31:0]</obj_property>
-      <obj_property name="Radix">HEXRADIX</obj_property>
+   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/counter_burst_i">
+      <obj_property name="ElementShortName">counter_burst_i[3:0]</obj_property>
+      <obj_property name="ObjectShortName">counter_burst_i[3:0]</obj_property>
+      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/res_reg[1]">
-      <obj_property name="ElementShortName">[1][31:0][31:0][31:0]</obj_property>
-      <obj_property name="ObjectShortName">[1][31:0][31:0][31:0]</obj_property>
-      <obj_property name="Radix">HEXRADIX</obj_property>
+   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/counter_burst">
+      <obj_property name="ElementShortName">counter_burst[3:0]</obj_property>
+      <obj_property name="ObjectShortName">counter_burst[3:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/res_reg[2]">
-      <obj_property name="ElementShortName">[2][31:0][31:0][31:0]</obj_property>
-      <obj_property name="ObjectShortName">[2][31:0][31:0][31:0]</obj_property>
-      <obj_property name="Radix">HEXRADIX</obj_property>
+   <wvobject type="logic" fp_name="/ttm_core_tb/ttm_core_inst/ping">
+      <obj_property name="ElementShortName">ping</obj_property>
+      <obj_property name="ObjectShortName">ping</obj_property>
+      <obj_property name="CustomSignalColor">#FF00FF</obj_property>
+      <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/res_reg[3]">
-      <obj_property name="ElementShortName">[3][31:0][31:0][31:0]</obj_property>
-      <obj_property name="ObjectShortName">[3][31:0][31:0][31:0]</obj_property>
-      <obj_property name="Radix">HEXRADIX</obj_property>
+   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/counter_output_a">
+      <obj_property name="ElementShortName">counter_output_a[15:0]</obj_property>
+      <obj_property name="ObjectShortName">counter_output_a[15:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/res_reg_1[0]">
-      <obj_property name="ElementShortName">[0][31:0][31:0][31:0]</obj_property>
-      <obj_property name="ObjectShortName">[0][31:0][31:0][31:0]</obj_property>
-      <obj_property name="Radix">HEXRADIX</obj_property>
+   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/counter_output_b">
+      <obj_property name="ElementShortName">counter_output_b[3:0]</obj_property>
+      <obj_property name="ObjectShortName">counter_output_b[3:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/res_reg_1[1]">
-      <obj_property name="ElementShortName">[1][31:0][31:0][31:0]</obj_property>
-      <obj_property name="ObjectShortName">[1][31:0][31:0][31:0]</obj_property>
-      <obj_property name="Radix">HEXRADIX</obj_property>
+   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/\genblk4[0].genblk1[22].dist_mem_res_ping /a">
+      <obj_property name="ElementShortName">a[3:0]</obj_property>
+      <obj_property name="ObjectShortName">a[3:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/res_reg_1[2]">
-      <obj_property name="ElementShortName">[2][31:0][31:0][31:0]</obj_property>
-      <obj_property name="ObjectShortName">[2][31:0][31:0][31:0]</obj_property>
-      <obj_property name="Radix">HEXRADIX</obj_property>
+   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/res_ping">
+      <obj_property name="ElementShortName">res_ping[31:0][31:0][31:0]</obj_property>
+      <obj_property name="ObjectShortName">res_ping[31:0][31:0][31:0]</obj_property>
+      <obj_property name="Radix">REALRADIX</obj_property>
+      <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
+      <obj_property name="radix_fractionWidth">16</obj_property>
+      <obj_property name="radix_otherWidth">0</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/res_reg_1[3]">
-      <obj_property name="ElementShortName">[3][31:0][31:0][31:0]</obj_property>
-      <obj_property name="ObjectShortName">[3][31:0][31:0][31:0]</obj_property>
-      <obj_property name="Radix">HEXRADIX</obj_property>
+   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/\genblk4[0].genblk1[22].dist_mem_res_pong /a">
+      <obj_property name="ElementShortName">a[3:0]</obj_property>
+      <obj_property name="ObjectShortName">a[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/res_pong">
+      <obj_property name="ElementShortName">res_pong[31:0][31:0][31:0]</obj_property>
+      <obj_property name="ObjectShortName">res_pong[31:0][31:0][31:0]</obj_property>
+      <obj_property name="Radix">REALRADIX</obj_property>
+      <obj_property name="radix_realType">SIGNEDFIXEDPOINTRADIX</obj_property>
+      <obj_property name="radix_fractionWidth">16</obj_property>
+      <obj_property name="radix_otherWidth">0</obj_property>
    </wvobject>
 </wave_config>
