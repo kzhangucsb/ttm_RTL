@@ -62,7 +62,7 @@ ENTITY dist_mem_gen_w18 IS
     d : IN STD_LOGIC_VECTOR(17 DOWNTO 0);
     clk : IN STD_LOGIC;
     we : IN STD_LOGIC;
-    spo : OUT STD_LOGIC_VECTOR(17 DOWNTO 0)
+    qspo : OUT STD_LOGIC_VECTOR(17 DOWNTO 0)
   );
 END dist_mem_gen_w18;
 
@@ -129,7 +129,7 @@ ARCHITECTURE dist_mem_gen_w18_arch OF dist_mem_gen_w18 IS
   ATTRIBUTE CHECK_LICENSE_TYPE : STRING;
   ATTRIBUTE CHECK_LICENSE_TYPE OF dist_mem_gen_w18_arch : ARCHITECTURE IS "dist_mem_gen_w18,dist_mem_gen_v8_0_12,{}";
   ATTRIBUTE CORE_GENERATION_INFO : STRING;
-  ATTRIBUTE CORE_GENERATION_INFO OF dist_mem_gen_w18_arch: ARCHITECTURE IS "dist_mem_gen_w18,dist_mem_gen_v8_0_12,{x_ipProduct=Vivado 2018.3,x_ipVendor=xilinx.com,x_ipLibrary=ip,x_ipName=dist_mem_gen,x_ipVersion=8.0,x_ipCoreRevision=12,x_ipLanguage=VERILOG,x_ipSimLanguage=MIXED,C_FAMILY=virtexuplus,C_ADDR_WIDTH=4,C_DEFAULT_DATA=0,C_DEPTH=16,C_HAS_CLK=1,C_HAS_D=1,C_HAS_DPO=0,C_HAS_DPRA=0,C_HAS_I_CE=0,C_HAS_QDPO=0,C_HAS_QDPO_CE=0,C_HAS_QDPO_CLK=0,C_HAS_QDPO_RST=0,C_HAS_QDPO_SRST=0,C_HAS_QSPO=0,C_HAS_QSPO_CE=0,C_HAS_QSPO_RST=0,C_HAS_QSPO_SRST=0,C_HAS_SPO=1,C_HAS_WE=1,C_MEM" & 
+  ATTRIBUTE CORE_GENERATION_INFO OF dist_mem_gen_w18_arch: ARCHITECTURE IS "dist_mem_gen_w18,dist_mem_gen_v8_0_12,{x_ipProduct=Vivado 2018.3,x_ipVendor=xilinx.com,x_ipLibrary=ip,x_ipName=dist_mem_gen,x_ipVersion=8.0,x_ipCoreRevision=12,x_ipLanguage=VERILOG,x_ipSimLanguage=MIXED,C_FAMILY=virtexuplus,C_ADDR_WIDTH=4,C_DEFAULT_DATA=0,C_DEPTH=16,C_HAS_CLK=1,C_HAS_D=1,C_HAS_DPO=0,C_HAS_DPRA=0,C_HAS_I_CE=0,C_HAS_QDPO=0,C_HAS_QDPO_CE=0,C_HAS_QDPO_CLK=0,C_HAS_QDPO_RST=0,C_HAS_QDPO_SRST=0,C_HAS_QSPO=1,C_HAS_QSPO_CE=0,C_HAS_QSPO_RST=0,C_HAS_QSPO_SRST=0,C_HAS_SPO=0,C_HAS_WE=1,C_MEM" & 
 "_INIT_FILE=no_coe_file_loaded,C_ELABORATION_DIR=./,C_MEM_TYPE=1,C_PIPELINE_STAGES=0,C_QCE_JOINED=0,C_QUALIFY_WE=0,C_READ_MIF=0,C_REG_A_D_INPUTS=0,C_REG_DPRA_INPUT=0,C_SYNC_ENABLE=1,C_WIDTH=18,C_PARSER_TYPE=1}";
 BEGIN
   U0 : dist_mem_gen_v8_0_12
@@ -148,11 +148,11 @@ BEGIN
       C_HAS_QDPO_CLK => 0,
       C_HAS_QDPO_RST => 0,
       C_HAS_QDPO_SRST => 0,
-      C_HAS_QSPO => 0,
+      C_HAS_QSPO => 1,
       C_HAS_QSPO_CE => 0,
       C_HAS_QSPO_RST => 0,
       C_HAS_QSPO_SRST => 0,
-      C_HAS_SPO => 1,
+      C_HAS_SPO => 0,
       C_HAS_WE => 1,
       C_MEM_INIT_FILE => "no_coe_file_loaded",
       C_ELABORATION_DIR => "./",
@@ -181,6 +181,6 @@ BEGIN
       qdpo_rst => '0',
       qspo_srst => '0',
       qdpo_srst => '0',
-      spo => spo
+      qspo => qspo
     );
 END dist_mem_gen_w18_arch;

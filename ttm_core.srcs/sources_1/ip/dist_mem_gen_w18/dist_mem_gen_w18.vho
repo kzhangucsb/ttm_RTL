@@ -58,7 +58,7 @@ COMPONENT dist_mem_gen_w18
     d : IN STD_LOGIC_VECTOR(17 DOWNTO 0);
     clk : IN STD_LOGIC;
     we : IN STD_LOGIC;
-    spo : OUT STD_LOGIC_VECTOR(17 DOWNTO 0)
+    qspo : OUT STD_LOGIC_VECTOR(17 DOWNTO 0)
   );
 END COMPONENT;
 -- COMP_TAG_END ------ End COMPONENT Declaration ------------
@@ -73,7 +73,7 @@ your_instance_name : dist_mem_gen_w18
     d => d,
     clk => clk,
     we => we,
-    spo => spo
+    qspo => qspo
   );
 -- INST_TAG_END ------ End INSTANTIATION Template ---------
 
