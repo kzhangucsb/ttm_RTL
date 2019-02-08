@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="5313910000fs"></ZoomStartTime>
-      <ZoomEndTime time="5792410001fs"></ZoomEndTime>
-      <Cursor1Time time="5665000000fs"></Cursor1Time>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="119800001fs"></ZoomEndTime>
+      <Cursor1Time time="237520000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="175"></NameColumnWidth>
-      <ValueColumnWidth column_width="138"></ValueColumnWidth>
+      <ValueColumnWidth column_width="134"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="38" />
+   <WVObjectSize size="36" />
    <wvobject type="logic" fp_name="/ttm_core_tb/clk">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -163,16 +163,6 @@
       <obj_property name="radix_fractionWidth">16</obj_property>
       <obj_property name="radix_otherWidth">0</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/counter_burst_i">
-      <obj_property name="ElementShortName">counter_burst_i[3:0]</obj_property>
-      <obj_property name="ObjectShortName">counter_burst_i[3:0]</obj_property>
-      <obj_property name="CustomSignalColor">#A0A0A4</obj_property>
-      <obj_property name="UseCustomSignalColor">true</obj_property>
-   </wvobject>
-   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/counter_burst">
-      <obj_property name="ElementShortName">counter_burst[3:0]</obj_property>
-      <obj_property name="ObjectShortName">counter_burst[3:0]</obj_property>
-   </wvobject>
    <wvobject type="logic" fp_name="/ttm_core_tb/ttm_core_inst/ping">
       <obj_property name="ElementShortName">ping</obj_property>
       <obj_property name="ObjectShortName">ping</obj_property>
@@ -187,7 +177,7 @@
       <obj_property name="ElementShortName">counter_output_b[3:0]</obj_property>
       <obj_property name="ObjectShortName">counter_output_b[3:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/\genblk4[0].genblk1[22].dist_mem_res_ping /a">
+   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/\genblk4[0].genblk1[0].dist_mem_res_ping /a">
       <obj_property name="ElementShortName">a[3:0]</obj_property>
       <obj_property name="ObjectShortName">a[3:0]</obj_property>
    </wvobject>
@@ -199,7 +189,7 @@
       <obj_property name="radix_fractionWidth">16</obj_property>
       <obj_property name="radix_otherWidth">0</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/\genblk4[0].genblk1[22].dist_mem_res_pong /a">
+   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/\genblk4[0].genblk1[0].dist_mem_res_pong /a">
       <obj_property name="ElementShortName">a[3:0]</obj_property>
       <obj_property name="ObjectShortName">a[3:0]</obj_property>
    </wvobject>

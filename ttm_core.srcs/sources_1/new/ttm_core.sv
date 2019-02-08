@@ -218,14 +218,27 @@ module ttm_core #(
 			);
 
 			always_comb begin : proc_res_sum
-				if (g < BATCH_SIZE / 2) begin
-					if (ping) begin
-						res_sum[g][h] = res_pong[2*g][h] + res_pong[2*g+1][h];
+				if (mode) begin
+					if (h < RANK_MAX - 1) begin
+						if (ping) begin
+							res_sum[g][h] = res_pong[g][h+1];
+						end else begin
+							res_sum[g][h] = res_ping[g][h+1];
+						end 
 					end else begin
-						res_sum[g][h] = res_ping[2*g][h] + res_ping[2*g+1][h];
+						res_sum[g][h] = 0;
 					end
+				
 				end else begin
-					res_sum[g][h] = 0;
+					if (g < BATCH_SIZE / 2) begin
+						if (ping) begin
+							res_sum[g][h] = res_pong[2*g][h] + res_pong[2*g+1][h];
+						end else begin
+							res_sum[g][h] = res_ping[2*g][h] + res_ping[2*g+1][h];
+						end
+					end else begin
+						res_sum[g][h] = 0;
+					end
 				end
 			end
 
@@ -235,7 +248,7 @@ module ttm_core #(
 	for (h = 0; h < RANK_MAX; h = h + 1) begin 
 		always_comb begin
 			if (mode) begin
-				res_ud[h] = 0;//(counter_output_a == h) & res.tready;
+				res_ud[h] = (counter_output_a >= 0) & res.tready;
 			end else begin
 				res_ud[h] = (counter_output_a >= 0) & (counter_output_a < 4);
 			end
@@ -335,9 +348,9 @@ module ttm_core #(
 				res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] = 0;
 			end else if (mode) begin
 				if (ping) begin
-					res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] = res_pong[g][counter_output_a];
+					res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] = res_pong[g][0];
 				end else begin
-					res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] = res_ping[g][counter_output_a];
+					res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] = res_ping[g][0];
 				end
 			end else begin
 				res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] = res_sum[0][g];
