@@ -1,0 +1,7 @@
+*.sim
+*.runs
+*.ip_user_files
+*.cache
+*.hw
+*.log
+*.jou
