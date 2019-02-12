@@ -23,7 +23,7 @@
       <spirit:parameters>
         <spirit:parameter>
           <spirit:name>POLARITY</spirit:name>
-          <spirit:value spirit:id="BUSIFPARAM_VALUE.RST_N.POLARITY" spirit:choiceRef="choice_list_74b5137e">ACTIVE_LOW</spirit:value>
+          <spirit:value spirit:id="BUSIFPARAM_VALUE.RST_N.POLARITY" spirit:choiceRef="choice_list_9d8b0d81">ACTIVE_LOW</spirit:value>
         </spirit:parameter>
       </spirit:parameters>
     </spirit:busInterface>
@@ -243,12 +243,21 @@
         <spirit:language>SystemVerilog</spirit:language>
         <spirit:modelName>ttm_core_wrapper</spirit:modelName>
         <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagesynthesis_xilinx_com_ip_dist_mem_gen_8_0__ref_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagesynthesis_xilinx_com_ip_xbip_dsp48_macro_3_0__ref_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagesynthesis_xilinx_com_ip_c_shift_ram_12_0__ref_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:fileSetRef>
           <spirit:localName>xilinx_anylanguagesynthesis_view_fileset</spirit:localName>
         </spirit:fileSetRef>
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>1001ba7d</spirit:value>
+            <spirit:value>dcb1e2e0</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -259,12 +268,21 @@
         <spirit:language>SystemVerilog</spirit:language>
         <spirit:modelName>ttm_core_wrapper</spirit:modelName>
         <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagebehavioralsimulation_xilinx_com_ip_dist_mem_gen_8_0__ref_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagebehavioralsimulation_xilinx_com_ip_xbip_dsp48_macro_3_0__ref_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:fileSetRef>
+          <spirit:localName>xilinx_anylanguagebehavioralsimulation_xilinx_com_ip_c_shift_ram_12_0__ref_view_fileset</spirit:localName>
+        </spirit:fileSetRef>
+        <spirit:fileSetRef>
           <spirit:localName>xilinx_anylanguagebehavioralsimulation_view_fileset</spirit:localName>
         </spirit:fileSetRef>
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>86a70d6a</spirit:value>
+            <spirit:value>dcb1e2e0</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -652,7 +670,7 @@
   </spirit:model>
   <spirit:choices>
     <spirit:choice>
-      <spirit:name>choice_list_74b5137e</spirit:name>
+      <spirit:name>choice_list_9d8b0d81</spirit:name>
       <spirit:enumeration>ACTIVE_HIGH</spirit:enumeration>
       <spirit:enumeration>ACTIVE_LOW</spirit:enumeration>
     </spirit:choice>
@@ -661,85 +679,20 @@
     <spirit:fileSet>
       <spirit:name>xilinx_anylanguagesynthesis_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/dist_mem_gen_w32/hdl/dist_mem_gen_v8_0_vhsyn_rfs.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:logicalName>dist_mem_gen_v8_0_12</spirit:logicalName>
+        <spirit:name>ttm_core.srcs/sources_1/ip/dist_mem_gen_w32/dist_mem_gen_w32.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/dist_mem_gen_w32/synth/dist_mem_gen_w32.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:name>ttm_core.srcs/sources_1/ip/xbip_dsp48_macro_0/xbip_dsp48_macro_0.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/xbip_dsp48_macro_0/hdl/xbip_dsp48_wrapper_v3_0_vh_rfs.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:logicalName>xbip_dsp48_wrapper_v3_0_4</spirit:logicalName>
+        <spirit:name>ttm_core.srcs/sources_1/ip/c_shift_ram_0/c_shift_ram_0.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/xbip_dsp48_macro_0/hdl/xbip_utils_v3_0_vh_rfs.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:logicalName>xbip_utils_v3_0_9</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/xbip_dsp48_macro_0/hdl/xbip_pipe_v3_0_vh_rfs.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:logicalName>xbip_pipe_v3_0_5</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/xbip_dsp48_macro_0/hdl/xbip_dsp48_macro_v3_0_vh_rfs.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:logicalName>xbip_dsp48_macro_v3_0_16</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/xbip_dsp48_macro_0/synth/xbip_dsp48_macro_0.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/xbip_dsp48_macro_0/xbip_dsp48_macro_0_ooc.xdc</spirit:name>
-        <spirit:userFileType>xdc</spirit:userFileType>
-        <spirit:userFileType>USED_IN_out_of_context</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/c_shift_ram_0/hdl/xbip_utils_v3_0_vh_rfs.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:logicalName>xbip_utils_v3_0_9</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/c_shift_ram_0/hdl/c_reg_fd_v12_0_vh_rfs.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:logicalName>c_reg_fd_v12_0_5</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/c_shift_ram_0/hdl/c_mux_bit_v12_0_vh_rfs.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:logicalName>c_mux_bit_v12_0_5</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/c_shift_ram_0/hdl/c_shift_ram_v12_0_vh_rfs.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:logicalName>c_shift_ram_v12_0_12</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/c_shift_ram_0/synth/c_shift_ram_0.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/c_shift_ram_0/c_shift_ram_0_ooc.xdc</spirit:name>
-        <spirit:userFileType>xdc</spirit:userFileType>
-        <spirit:userFileType>USED_IN_out_of_context</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/dist_mem_gen_w18/dist_mem_gen_w18_ooc.xdc</spirit:name>
-        <spirit:userFileType>xdc</spirit:userFileType>
-        <spirit:userFileType>USED_IN_out_of_context</spirit:userFileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/dist_mem_gen_w18/hdl/dist_mem_gen_v8_0_vhsyn_rfs.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:logicalName>dist_mem_gen_v8_0_12</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/dist_mem_gen_w18/synth/dist_mem_gen_w18.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
+        <spirit:name>ttm_core.srcs/sources_1/ip/dist_mem_gen_w18/dist_mem_gen_w18.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>ttm_core.srcs/sources_1/new/fifo_merge.sv</spirit:name>
@@ -764,82 +717,52 @@
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagesynthesis_xilinx_com_ip_dist_mem_gen_8_0__ref_view_fileset</spirit:name>
+      <spirit:vendorExtensions>
+        <xilinx:subCoreRef>
+          <xilinx:componentRef xilinx:vendor="xilinx.com" xilinx:library="ip" xilinx:name="dist_mem_gen" xilinx:version="8.0">
+            <xilinx:mode xilinx:name="create_mode"/>
+          </xilinx:componentRef>
+        </xilinx:subCoreRef>
+      </spirit:vendorExtensions>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagesynthesis_xilinx_com_ip_xbip_dsp48_macro_3_0__ref_view_fileset</spirit:name>
+      <spirit:vendorExtensions>
+        <xilinx:subCoreRef>
+          <xilinx:componentRef xilinx:vendor="xilinx.com" xilinx:library="ip" xilinx:name="xbip_dsp48_macro" xilinx:version="3.0">
+            <xilinx:mode xilinx:name="create_mode"/>
+          </xilinx:componentRef>
+        </xilinx:subCoreRef>
+      </spirit:vendorExtensions>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagesynthesis_xilinx_com_ip_c_shift_ram_12_0__ref_view_fileset</spirit:name>
+      <spirit:vendorExtensions>
+        <xilinx:subCoreRef>
+          <xilinx:componentRef xilinx:vendor="xilinx.com" xilinx:library="ip" xilinx:name="c_shift_ram" xilinx:version="12.0">
+            <xilinx:mode xilinx:name="create_mode"/>
+          </xilinx:componentRef>
+        </xilinx:subCoreRef>
+      </spirit:vendorExtensions>
+    </spirit:fileSet>
+    <spirit:fileSet>
       <spirit:name>xilinx_anylanguagebehavioralsimulation_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/dist_mem_gen_w32/simulation/dist_mem_gen_v8_0.v</spirit:name>
-        <spirit:fileType>verilogSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
-        <spirit:logicalName>dist_mem_gen_v8_0_12</spirit:logicalName>
+        <spirit:name>ttm_core.srcs/sources_1/ip/dist_mem_gen_w32/dist_mem_gen_w32.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/dist_mem_gen_w32/sim/dist_mem_gen_w32.v</spirit:name>
-        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:name>ttm_core.srcs/sources_1/ip/xbip_dsp48_macro_0/xbip_dsp48_macro_0.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/xbip_dsp48_macro_0/hdl/xbip_dsp48_wrapper_v3_0_vh_rfs.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
-        <spirit:logicalName>xbip_dsp48_wrapper_v3_0_4</spirit:logicalName>
+        <spirit:name>ttm_core.srcs/sources_1/ip/c_shift_ram_0/c_shift_ram_0.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
       </spirit:file>
       <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/xbip_dsp48_macro_0/hdl/xbip_utils_v3_0_vh_rfs.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
-        <spirit:logicalName>xbip_utils_v3_0_9</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/xbip_dsp48_macro_0/hdl/xbip_pipe_v3_0_vh_rfs.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
-        <spirit:logicalName>xbip_pipe_v3_0_5</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/xbip_dsp48_macro_0/hdl/xbip_dsp48_macro_v3_0_vh_rfs.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
-        <spirit:logicalName>xbip_dsp48_macro_v3_0_16</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/xbip_dsp48_macro_0/sim/xbip_dsp48_macro_0.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/c_shift_ram_0/hdl/xbip_utils_v3_0_vh_rfs.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
-        <spirit:logicalName>xbip_utils_v3_0_9</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/c_shift_ram_0/hdl/c_reg_fd_v12_0_vh_rfs.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
-        <spirit:logicalName>c_reg_fd_v12_0_5</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/c_shift_ram_0/hdl/c_mux_bit_v12_0_vh_rfs.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
-        <spirit:logicalName>c_mux_bit_v12_0_5</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/c_shift_ram_0/hdl/c_shift_ram_v12_0_vh_rfs.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
-        <spirit:logicalName>c_shift_ram_v12_0_12</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/c_shift_ram_0/sim/c_shift_ram_0.vhd</spirit:name>
-        <spirit:fileType>vhdlSource</spirit:fileType>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/dist_mem_gen_w18/simulation/dist_mem_gen_v8_0.v</spirit:name>
-        <spirit:fileType>verilogSource</spirit:fileType>
-        <spirit:userFileType>USED_IN_ipstatic</spirit:userFileType>
-        <spirit:logicalName>dist_mem_gen_v8_0_12</spirit:logicalName>
-      </spirit:file>
-      <spirit:file>
-        <spirit:name>ttm_core.srcs/sources_1/ip/dist_mem_gen_w18/sim/dist_mem_gen_w18.v</spirit:name>
-        <spirit:fileType>verilogSource</spirit:fileType>
+        <spirit:name>ttm_core.srcs/sources_1/ip/dist_mem_gen_w18/dist_mem_gen_w18.xci</spirit:name>
+        <spirit:userFileType>xci</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>ttm_core.srcs/sources_1/new/fifo_merge.sv</spirit:name>
@@ -861,6 +784,36 @@
         <spirit:name>ttm_core.srcs/sources_1/new/ttm_core_wrapper.sv</spirit:name>
         <spirit:fileType>systemVerilogSource</spirit:fileType>
       </spirit:file>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagebehavioralsimulation_xilinx_com_ip_dist_mem_gen_8_0__ref_view_fileset</spirit:name>
+      <spirit:vendorExtensions>
+        <xilinx:subCoreRef>
+          <xilinx:componentRef xilinx:vendor="xilinx.com" xilinx:library="ip" xilinx:name="dist_mem_gen" xilinx:version="8.0">
+            <xilinx:mode xilinx:name="create_mode"/>
+          </xilinx:componentRef>
+        </xilinx:subCoreRef>
+      </spirit:vendorExtensions>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagebehavioralsimulation_xilinx_com_ip_xbip_dsp48_macro_3_0__ref_view_fileset</spirit:name>
+      <spirit:vendorExtensions>
+        <xilinx:subCoreRef>
+          <xilinx:componentRef xilinx:vendor="xilinx.com" xilinx:library="ip" xilinx:name="xbip_dsp48_macro" xilinx:version="3.0">
+            <xilinx:mode xilinx:name="create_mode"/>
+          </xilinx:componentRef>
+        </xilinx:subCoreRef>
+      </spirit:vendorExtensions>
+    </spirit:fileSet>
+    <spirit:fileSet>
+      <spirit:name>xilinx_anylanguagebehavioralsimulation_xilinx_com_ip_c_shift_ram_12_0__ref_view_fileset</spirit:name>
+      <spirit:vendorExtensions>
+        <xilinx:subCoreRef>
+          <xilinx:componentRef xilinx:vendor="xilinx.com" xilinx:library="ip" xilinx:name="c_shift_ram" xilinx:version="12.0">
+            <xilinx:mode xilinx:name="create_mode"/>
+          </xilinx:componentRef>
+        </xilinx:subCoreRef>
+      </spirit:vendorExtensions>
     </spirit:fileSet>
     <spirit:fileSet>
       <spirit:name>xilinx_testbench_view_fileset</spirit:name>
@@ -924,8 +877,8 @@
       </xilinx:taxonomies>
       <xilinx:displayName>ttm_core_wrapper_v1_0</xilinx:displayName>
       <xilinx:definitionSource>package_project</xilinx:definitionSource>
-      <xilinx:coreRevision>4</xilinx:coreRevision>
-      <xilinx:coreCreationDateTime>2019-02-10T05:45:08Z</xilinx:coreCreationDateTime>
+      <xilinx:coreRevision>9</xilinx:coreRevision>
+      <xilinx:coreCreationDateTime>2019-02-10T21:33:15Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@50fe72b_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@3828252d_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
@@ -950,12 +903,63 @@
         <xilinx:tag xilinx:name="ui.data.coregen.dd@44c1c469_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@167a841b_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@12df7f8_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@47809f8b_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3ea6b6f_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4bcd7457_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6b816a7e_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7c11f079_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@44dea07d_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1677bbf2_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3cfaecd_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@c8450e6_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@51e23802_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@22f9e081_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@c7b1ece_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1b1c862f_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@701c1948_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@450bcc08_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4ffadfcd_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2849855e_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@14436f3c_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@4f190916_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@683a6bc8_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@33faa2e8_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@77636562_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@2cb334ac_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1123f2dc_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6c1c4628_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1130c32f_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@60068f50_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6ab8cc1a_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@19bb2753_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@bc4e24c_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6eafe0d0_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3e84822_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1617502a_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1e8f4a6d_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@72e2fb74_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6b54836_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@756948c7_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@43d89908_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3bc9d1e9_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@491b605b_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6525dc6a_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@127ca9ff_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@36dfeb76_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@3c138366_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6fd6a092_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@759e34f5_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@59c579fe_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6b150ba_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@6208fa25_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@1df984f1_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
+        <xilinx:tag xilinx:name="ui.data.coregen.dd@7c505147_ARCHIVE_LOCATION">/home/zkq/Xilinx/ttm_core</xilinx:tag>
       </xilinx:tags>
     </xilinx:coreExtensions>
     <xilinx:packagingInfo>
       <xilinx:xilinxVersion>2018.3</xilinx:xilinxVersion>
-      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="5afb2964"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="ad62abe4"/>
+      <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="49a51d55"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="e85a2180"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="c3f79a01"/>
       <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="5fcf2349"/>
       <xilinx:checksum xilinx:scope="parameters" xilinx:value="bbba97a9"/>

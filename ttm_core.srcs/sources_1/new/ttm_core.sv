@@ -47,7 +47,9 @@ module ttm_core #(
 	reg signed [3:0] counter_burst_bi;
 	//reg signed [15:0] counter_a1_scale;
 	reg signed [15:0] counter_output_a;
+	reg signed [15:0] counter_output_ai;
 	reg signed [3:0] counter_output_b;
+	reg signed [3:0] counter_output_bi;
 
 	reg mat_a1_en_r;
 
@@ -59,7 +61,8 @@ module ttm_core #(
 	// ) res_prt();
 
 	wire procvalid;
-	reg  procpause;
+	wire outputlast;
+	reg  procpause_i, procpause;
 	wire procvalid_r;
 	wire proclast_r;
 	//reg  procvalid_1;
@@ -76,6 +79,9 @@ module ttm_core #(
 	//reg  [DATA_WIDTH-1:0] res_reg [0:BURST_SIZE-1][BATCH_SIZE-1:0][RANK_MAX-1:0];
 	//reg  [DATA_WIDTH-1:0] res_reg_1 [0:BURST_SIZE-1][BATCH_SIZE-1:0][RANK_MAX-1:0];
 
+	reg  [3:0] res_ping_add;
+	reg  [3:0] res_pong_add;
+
 	wire [DATA_WIDTH-1:0] res_ping [BATCH_SIZE-1:0][RANK_MAX-1:0];
 	wire [DATA_WIDTH-1:0] res_pong [BATCH_SIZE-1:0][RANK_MAX-1:0];
 	reg  [DATA_WIDTH-1:0] res_sum  [BATCH_SIZE-1:0][RANK_MAX-1:0];
@@ -84,7 +90,7 @@ module ttm_core #(
 	reg  [RANK_MAX*DATA_WIDTH-1:0] res_a1_sum;
 	wire [RANK_MAX*DATA_WIDTH-1:0] res_a1_sum_1;
 	reg  res_a1_valid;
-	reg  ping, ping_r;
+	reg  ping_i, ping;
 	//reg  res_a1_ready;
 
 	fifo_merge_repeat #(
@@ -114,9 +120,9 @@ module ttm_core #(
 			end
 		end else begin
 			counter_burst_ai = 0; 
-			if (procvalid_r & ~procpause) begin
+			if (procvalid & ~procpause) begin
 				counter_burst_bi = counter_burst_b + 1; 
-				if ((proclast_r) | (counter_burst_b >= burst_size - 1))begin
+				if ((tenmat.tlast) | (counter_burst_b >= burst_size - 1))begin
 					counter_burst_bi = 0;
 				end
 			end else begin
@@ -175,12 +181,21 @@ module ttm_core #(
 				tlast_2 <= 1;
 			end else if (mode & (counter_burst_a >= burst_size - 1)) begin
 				tlast_2 <= 0;
-			end else if (~mode & procvalid_r) begin
+			end else if (~mode & procvalid_r & ~procpause) begin
 				tlast_2 <= 0;
 			end
 		end
 	end
 
+	always_ff @(posedge clk or negedge rst_n) begin : proc_res_ping_pong_add
+		if(~rst_n) begin
+			res_ping_add <= 0;
+			res_pong_add <= 0;
+		end else begin
+			res_ping_add <=  ping_i ? counter_burst_ai : counter_output_bi;
+			res_pong_add <= ~ping_i ? counter_burst_ai : counter_output_bi;
+		end
+	end
 	
 	for (g = 0; g < BATCH_SIZE; g = g + 1) begin
 		assign ten_int[g] = tenmat.data[(g+1+RANK_MAX)*DATA_WIDTH-1: (g+RANK_MAX)*DATA_WIDTH];
@@ -225,7 +240,7 @@ module ttm_core #(
 			);
 	
 			dist_mem_gen_w32 dist_mem_res_ping(
-				.a(ping ? counter_burst_a : counter_output_b), 
+				.a(res_ping_add), 
 				.d(ping ? prod_r[g][h] : res_sum[g][h]),
 				.clk(clk), 
 				.we(ping ? procvalid_r & ~procpause: res_ud[h]), 
@@ -233,7 +248,7 @@ module ttm_core #(
 			);
 
 			dist_mem_gen_w32 dist_mem_res_pong(
-				.a(~ping ? counter_burst_a : counter_output_b), 
+				.a(res_pong_add), 
 				.d(~ping ? prod_r[g][h] : res_sum[g][h]), 
 				.clk(clk), 
 				.we(~ping ? procvalid_r & ~procpause: res_ud[h]), 
@@ -278,69 +293,142 @@ module ttm_core #(
 		end
 	end
 
-	always_ff @(posedge clk or negedge rst_n) begin : proc_counter_output_a
-		if(~rst_n) begin
-			counter_output_a <= -1;
-			procpause <= 0;
-			ping <= 1;
-		end else begin
-			//if (tlast_1 & ~procpause) begin 
+	assign outputlast = (mode & (counter_output_b >= burst_size - 1) & res.tready & (counter_output_a == RANK_MAX -1))
+	 | (~mode & (counter_output_a == 4) & res.tready);
 
-			if (counter_output_a < 0) begin
-				if (procvalid_r & proclast_r) begin
-					counter_output_a <= 0;
-					ping <= ~ping;
-				end
-			end else begin // (counter_output_a >= 0)
-				if (procvalid_r & proclast_r) begin
-					procpause <= 1;
-				end
-				if (mode) begin
-					if ((counter_output_b >= burst_size - 1) & res.tready) begin
-						counter_output_a <= counter_output_a + 1;
-						if (counter_output_a == RANK_MAX -1) begin
-							if (procpause) begin
-								procpause <= 0;
-								ping <= ~ping;
-								counter_output_a <= 0;
-							end else begin
-								counter_output_a <= -1;
-							end
+	always_comb begin : proc_counter_output_a_i
+		counter_output_ai = counter_output_a;
+		ping_i = ping;
+		procpause_i = procpause;
+		if (counter_output_a < 0) begin
+			if (procvalid_r & proclast_r) begin
+				counter_output_ai = 0;
+				ping_i = ~ping;
+			end
+		end else begin // (counter_output_a >= 0)
+			if (procvalid_r & proclast_r & ~outputlast) begin
+				procpause_i = 1;
+			end 
+			if (mode) begin
+				if ((counter_output_b >= burst_size - 1) & res.tready) begin
+					counter_output_ai = counter_output_a + 1;
+					if (outputlast) begin
+						if (procpause | (procvalid_r & proclast_r)) begin
+							procpause_i = 0;
+							ping_i = ~ping;
+							counter_output_ai = 0;
+						end else begin
+							counter_output_ai = -1;
 						end
 					end
-				end else begin
-					if (counter_output_a < 4) begin
-						counter_output_a <= counter_output_a + 1;
-					end	else if (res.tready) begin // (counter_output_a == 4)
-						if (procpause) begin
-							procpause <= 0;
-							ping <= ~ping;
-							counter_output_a <= 0;
-						end else begin
-							counter_output_a <= -1;
-						end
+				end
+			end else begin
+				if (counter_output_a < 4) begin
+					counter_output_ai = counter_output_a + 1;
+				end	else if (res.tready) begin // (counter_output_a == 4), outputlast
+					if (procpause | (procvalid_r & proclast_r)) begin
+						procpause_i = 0;
+						ping_i = ~ping;
+						counter_output_ai = 0;
+					end else begin
+						counter_output_ai = -1;
 					end
 				end
 			end
 		end
 	end
 
-	always_ff @(posedge clk or negedge rst_n) begin : proc_counter_output_b
-		if(~rst_n) begin
-			counter_output_b <= 0;
-		end
-		else if (mode) begin
+	always_comb begin : proc_counter_output_b_i
+		counter_output_bi = counter_output_b;
+		if (mode) begin
 			if ((counter_output_a >= 0) & res.tready) begin
-				counter_output_b <= counter_output_b + 1;
+				counter_output_bi = counter_output_b + 1;
 				if (counter_output_b >= burst_size - 1) begin
-					counter_output_b <= 0;
+					counter_output_bi = 0;
 				end
 			end
 		end
 		else begin
-			counter_output_b <= 0;
+			counter_output_bi = 0;
 		end
 	end
+
+	always_ff @(posedge clk or negedge rst_n) begin : proc_counter_output
+		if(~rst_n) begin
+			counter_output_a <= -1;
+			counter_output_b <= 0;
+			procpause <= 0;
+			ping <= 1;
+		end else begin
+			counter_output_a <= counter_output_ai;
+			counter_output_b <= counter_output_bi;
+			procpause <= procpause_i;
+			ping <= ping_i;
+		end
+	end
+	// always_ff @(posedge clk or negedge rst_n) begin : proc_counter_output
+	// 	if(~rst_n) begin
+	// 		counter_output_a <= -1;
+	// 		procpause <= 0;
+	// 		ping <= 1;
+	// 	end else begin
+	// 		//if (tlast_1 & ~procpause) begin 
+
+	// 		if (counter_output_a < 0) begin
+	// 			if (procvalid_r & proclast_r) begin
+	// 				counter_output_a <= 0;
+	// 				ping <= ~ping;
+	// 			end
+	// 		end else begin // (counter_output_a >= 0)
+	// 			if (procvalid_r & proclast_r) begin
+	// 				procpause <= 1;
+	// 			end
+	// 			if (mode) begin
+	// 				if ((counter_output_b >= burst_size - 1) & res.tready) begin
+	// 					counter_output_a <= counter_output_a + 1;
+	// 					if (counter_output_a == RANK_MAX -1) begin
+	// 						if (procpause) begin
+	// 							procpause <= 0;
+	// 							ping <= ~ping;
+	// 							counter_output_a <= 0;
+	// 						end else begin
+	// 							counter_output_a <= -1;
+	// 						end
+	// 					end
+	// 				end
+	// 			end else begin
+	// 				if (counter_output_a < 4) begin
+	// 					counter_output_a <= counter_output_a + 1;
+	// 				end	else if (res.tready) begin // (counter_output_a == 4)
+	// 					if (procpause) begin
+	// 						procpause <= 0;
+	// 						ping <= ~ping;
+	// 						counter_output_a <= 0;
+	// 					end else begin
+	// 						counter_output_a <= -1;
+	// 					end
+	// 				end
+	// 			end
+	// 		end
+	// 	end
+	// end
+
+	// always_ff @(posedge clk or negedge rst_n) begin : proc_counter_output_b
+	// 	if(~rst_n) begin
+	// 		counter_output_b <= 0;
+	// 	end
+	// 	else if (mode) begin
+	// 		if ((counter_output_a >= 0) & res.tready) begin
+	// 			counter_output_b <= counter_output_b + 1;
+	// 			if (counter_output_b >= burst_size - 1) begin
+	// 				counter_output_b <= 0;
+	// 			end
+	// 		end
+	// 	end
+	// 	else begin
+	// 		counter_output_b <= 0;
+	// 	end
+	// end
 
 
 	always_comb begin : proc_res_prt
