@@ -56,9 +56,10 @@ COMPONENT dist_mem_gen_w32
   PORT (
     a : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
     d : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
+    dpra : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
     clk : IN STD_LOGIC;
     we : IN STD_LOGIC;
-    spo : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
+    dpo : OUT STD_LOGIC_VECTOR(31 DOWNTO 0)
   );
 END COMPONENT;
 -- COMP_TAG_END ------ End COMPONENT Declaration ------------
@@ -71,9 +72,10 @@ your_instance_name : dist_mem_gen_w32
   PORT MAP (
     a => a,
     d => d,
+    dpra => dpra,
     clk => clk,
     we => we,
-    spo => spo
+    dpo => dpo
   );
 -- INST_TAG_END ------ End INSTANTIATION Template ---------
 

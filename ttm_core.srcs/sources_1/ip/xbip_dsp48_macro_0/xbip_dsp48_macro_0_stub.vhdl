@@ -1,8 +1,8 @@
 -- Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 -- --------------------------------------------------------------------------------
 -- Tool Version: Vivado v.2018.3 (lin64) Build 2405991 Thu Dec  6 23:36:41 MST 2018
--- Date        : Sat Feb  9 12:03:05 2019
--- Host        : zkq-Precision-3630-Tower running 64-bit Ubuntu 18.04.1 LTS
+-- Date        : Wed Feb 20 14:46:56 2019
+-- Host        : zkq-Precision-3630-Tower running 64-bit Ubuntu 18.04.2 LTS
 -- Command     : write_vhdl -force -mode synth_stub
 --               /home/zkq/Xilinx/ttm_core/ttm_core.srcs/sources_1/ip/xbip_dsp48_macro_0/xbip_dsp48_macro_0_stub.vhdl
 -- Design      : xbip_dsp48_macro_0

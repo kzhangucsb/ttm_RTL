@@ -11,15 +11,15 @@
       </db_ref>
    </db_ref_list>
    <zoom_setting>
-      <ZoomStartTime time="7623751000fs"></ZoomStartTime>
-      <ZoomEndTime time="7914751001fs"></ZoomEndTime>
-      <Cursor1Time time="8125001000fs"></Cursor1Time>
+      <ZoomStartTime time="0fs"></ZoomStartTime>
+      <ZoomEndTime time="1690000001fs"></ZoomEndTime>
+      <Cursor1Time time="160000000fs"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="175"></NameColumnWidth>
-      <ValueColumnWidth column_width="130"></ValueColumnWidth>
+      <ValueColumnWidth column_width="126"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="35" />
+   <WVObjectSize size="38" />
    <wvobject type="logic" fp_name="/ttm_core_tb/clk">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -139,6 +139,10 @@
       <obj_property name="CustomSignalColor">#FFD700</obj_property>
       <obj_property name="UseCustomSignalColor">true</obj_property>
    </wvobject>
+   <wvobject type="logic" fp_name="/ttm_core_tb/ttm_core_inst/procvalid_r1">
+      <obj_property name="ElementShortName">procvalid_r1</obj_property>
+      <obj_property name="ObjectShortName">procvalid_r1</obj_property>
+   </wvobject>
    <wvobject type="logic" fp_name="/ttm_core_tb/ttm_core_inst/proclast_r">
       <obj_property name="ElementShortName">proclast_r</obj_property>
       <obj_property name="ObjectShortName">proclast_r</obj_property>
@@ -169,9 +173,13 @@
       <obj_property name="ElementShortName">counter_output_b[3:0]</obj_property>
       <obj_property name="ObjectShortName">counter_output_b[3:0]</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/\genblk4[0].genblk1[0].dist_mem_res_ping /a">
-      <obj_property name="ElementShortName">a[3:0]</obj_property>
-      <obj_property name="ObjectShortName">a[3:0]</obj_property>
+   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/res_ping_add_r">
+      <obj_property name="ElementShortName">res_ping_add_r[3:0]</obj_property>
+      <obj_property name="ObjectShortName">res_ping_add_r[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/res_ping_add">
+      <obj_property name="ElementShortName">res_ping_add[3:0]</obj_property>
+      <obj_property name="ObjectShortName">res_ping_add[3:0]</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/res_ping">
       <obj_property name="ElementShortName">res_ping[31:0][31:0][31:0]</obj_property>
@@ -181,9 +189,13 @@
       <obj_property name="radix_fractionWidth">16</obj_property>
       <obj_property name="radix_otherWidth">0</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/\genblk4[0].genblk1[0].dist_mem_res_pong /a">
-      <obj_property name="ElementShortName">a[3:0]</obj_property>
-      <obj_property name="ObjectShortName">a[3:0]</obj_property>
+   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/res_pong_add_r">
+      <obj_property name="ElementShortName">res_pong_add_r[3:0]</obj_property>
+      <obj_property name="ObjectShortName">res_pong_add_r[3:0]</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/res_pong_add">
+      <obj_property name="ElementShortName">res_pong_add[3:0]</obj_property>
+      <obj_property name="ObjectShortName">res_pong_add[3:0]</obj_property>
    </wvobject>
    <wvobject type="array" fp_name="/ttm_core_tb/ttm_core_inst/res_pong">
       <obj_property name="ElementShortName">res_pong[31:0][31:0][31:0]</obj_property>

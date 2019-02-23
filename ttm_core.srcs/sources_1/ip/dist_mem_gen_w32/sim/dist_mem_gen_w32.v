@@ -56,16 +56,18 @@
 module dist_mem_gen_w32 (
   a,
   d,
+  dpra,
   clk,
   we,
-  spo
+  dpo
 );
 
 input wire [3 : 0] a;
 input wire [31 : 0] d;
+input wire [3 : 0] dpra;
 input wire clk;
 input wire we;
-output wire [31 : 0] spo;
+output wire [31 : 0] dpo;
 
   dist_mem_gen_v8_0_12 #(
     .C_FAMILY("virtexuplus"),
@@ -74,8 +76,8 @@ output wire [31 : 0] spo;
     .C_DEPTH(16),
     .C_HAS_CLK(1),
     .C_HAS_D(1),
-    .C_HAS_DPO(0),
-    .C_HAS_DPRA(0),
+    .C_HAS_DPO(1),
+    .C_HAS_DPRA(1),
     .C_HAS_I_CE(0),
     .C_HAS_QDPO(0),
     .C_HAS_QDPO_CE(0),
@@ -86,11 +88,11 @@ output wire [31 : 0] spo;
     .C_HAS_QSPO_CE(0),
     .C_HAS_QSPO_RST(0),
     .C_HAS_QSPO_SRST(0),
-    .C_HAS_SPO(1),
+    .C_HAS_SPO(0),
     .C_HAS_WE(1),
     .C_MEM_INIT_FILE("no_coe_file_loaded"),
     .C_ELABORATION_DIR("./"),
-    .C_MEM_TYPE(1),
+    .C_MEM_TYPE(4),
     .C_PIPELINE_STAGES(0),
     .C_QCE_JOINED(0),
     .C_QUALIFY_WE(0),
@@ -103,7 +105,7 @@ output wire [31 : 0] spo;
   ) inst (
     .a(a),
     .d(d),
-    .dpra(4'B0),
+    .dpra(dpra),
     .clk(clk),
     .we(we),
     .i_ce(1'D1),
@@ -114,8 +116,8 @@ output wire [31 : 0] spo;
     .qdpo_rst(1'D0),
     .qspo_srst(1'D0),
     .qdpo_srst(1'D0),
-    .spo(spo),
-    .dpo(),
+    .spo(),
+    .dpo(dpo),
     .qspo(),
     .qdpo()
   );

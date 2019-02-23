@@ -1710,11 +1710,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Feb 09 20:01:57 UTC 2019</spirit:value>
+            <spirit:value>Wed Feb 20 22:45:45 UTC 2019</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:80a3106c</spirit:value>
+            <spirit:value>9:cc098202</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1739,11 +1739,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Feb 09 20:01:57 UTC 2019</spirit:value>
+            <spirit:value>Wed Feb 20 22:45:45 UTC 2019</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:80a3106c</spirit:value>
+            <spirit:value>9:cc098202</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1757,11 +1757,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Feb 09 20:01:57 UTC 2019</spirit:value>
+            <spirit:value>Wed Feb 20 22:45:45 UTC 2019</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:80a3106c</spirit:value>
+            <spirit:value>9:cc098202</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1777,11 +1777,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Feb 09 20:01:57 UTC 2019</spirit:value>
+            <spirit:value>Wed Feb 20 22:45:45 UTC 2019</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:80a3106c</spirit:value>
+            <spirit:value>9:cc098202</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1806,11 +1806,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Feb 09 20:01:57 UTC 2019</spirit:value>
+            <spirit:value>Wed Feb 20 22:45:45 UTC 2019</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:17ba5584</spirit:value>
+            <spirit:value>9:b2171506</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1826,11 +1826,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Feb 09 20:01:57 UTC 2019</spirit:value>
+            <spirit:value>Wed Feb 20 22:45:45 UTC 2019</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:17ba5584</spirit:value>
+            <spirit:value>9:b2171506</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1844,11 +1844,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Feb 09 20:01:57 UTC 2019</spirit:value>
+            <spirit:value>Wed Feb 20 22:45:45 UTC 2019</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:80a3106c</spirit:value>
+            <spirit:value>9:cc098202</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -1862,11 +1862,11 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>GENtimestamp</spirit:name>
-            <spirit:value>Sat Feb 09 20:03:06 UTC 2019</spirit:value>
+            <spirit:value>Wed Feb 20 22:46:57 UTC 2019</spirit:value>
           </spirit:parameter>
           <spirit:parameter>
             <spirit:name>outputProductCRC</spirit:name>
-            <spirit:value>9:80a3106c</spirit:value>
+            <spirit:value>9:cc098202</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -3497,7 +3497,7 @@
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="string">
         <spirit:name>C_REG_CONFIG</spirit:name>
-        <spirit:value spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_REG_CONFIG">00000000000011000000000001000000</spirit:value>
+        <spirit:value spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.C_REG_CONFIG">00000000000011000011000011100000</spirit:value>
       </spirit:modelParameter>
       <spirit:modelParameter spirit:dataType="integer">
         <spirit:name>C_TEST_CORE</spirit:name>
@@ -19930,7 +19930,7 @@
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>areg_4</spirit:name>
-      <spirit:value spirit:format="bool" spirit:resolve="user" spirit:id="PARAM_VALUE.areg_4" spirit:order="26">false</spirit:value>
+      <spirit:value spirit:format="bool" spirit:resolve="user" spirit:id="PARAM_VALUE.areg_4" spirit:order="26">true</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>breg_1</spirit:name>
@@ -19946,7 +19946,7 @@
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>breg_4</spirit:name>
-      <spirit:value spirit:format="bool" spirit:resolve="user" spirit:id="PARAM_VALUE.breg_4" spirit:order="30">false</spirit:value>
+      <spirit:value spirit:format="bool" spirit:resolve="user" spirit:id="PARAM_VALUE.breg_4" spirit:order="30">true</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>creg_1</spirit:name>
@@ -19966,7 +19966,7 @@
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>creg_5</spirit:name>
-      <spirit:value spirit:format="bool" spirit:resolve="user" spirit:id="PARAM_VALUE.creg_5" spirit:order="35">false</spirit:value>
+      <spirit:value spirit:format="bool" spirit:resolve="user" spirit:id="PARAM_VALUE.creg_5" spirit:order="35">true</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>concatreg_3</spirit:name>
@@ -19998,7 +19998,7 @@
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>opreg_5</spirit:name>
-      <spirit:value spirit:format="bool" spirit:resolve="user" spirit:id="PARAM_VALUE.opreg_5" spirit:order="43">false</spirit:value>
+      <spirit:value spirit:format="bool" spirit:resolve="user" spirit:id="PARAM_VALUE.opreg_5" spirit:order="43">true</spirit:value>
     </spirit:parameter>
     <spirit:parameter>
       <spirit:name>cinreg_1</spirit:name>

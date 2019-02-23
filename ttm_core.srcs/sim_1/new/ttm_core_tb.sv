@@ -83,9 +83,27 @@ module ttm_core_tb #(
 
 	initial begin
 		tenfifoif.tvalid = 0;
-		# 30 tenfifoif.tvalid = 1;
+		# 300 tenfifoif.tvalid = 1;
 		while(1)
 			#400 tenfifoif.tvalid = ~tenfifoif.tvalid;
+	end
+	assign coefframif.clk = clk;
+	assign coefframif.rst = ~rst_n;
+
+	initial begin
+		coefframif.en = 0;
+		coefframif.wr = 0;
+		coefframif.address = 0;
+		coefframif.address = 0;
+		coefframif.dataw = {32{32'h40000000}};
+		#100 
+		coefframif.en = 1;
+		coefframif.wr = 1;
+		while(coefframif.address < 128) begin
+			#10 coefframif.address = coefframif.address + 1;
+		end
+		#10 coefframif.en = 0;
+		coefframif.wr = 0;
 	end
 
 	initial begin
@@ -127,6 +145,7 @@ module ttm_core_tb #(
 	assign tenfifoif.tlast = ((tencnt+1)%4 == 0);
 	assign matfifoif.tlast = ((matcnt+1)%4 == 0);
 	//assign resfifoif.tready = 1;
+	//assign coefframif.en = 0;
 	assign burst_size = 4;
-	assign mode = 1;
+	assign mode = 0;
 endmodule
