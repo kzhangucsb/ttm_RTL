@@ -66,6 +66,7 @@ module ttm_core #(
 	wire procvalid_r;
 	reg  procvalid_r1;
 	wire proclast_r;
+	reg  proclast_r1;
 	//reg  procvalid_1;
 	reg  tlast_2;
 	wire [DATA_WIDTH-1:0] ten_int [BATCH_SIZE-1:0];
@@ -86,14 +87,14 @@ module ttm_core #(
 	wire [DATA_WIDTH-1:0] res_ping [BATCH_SIZE-1:0][RANK_MAX-1:0];
 	wire [DATA_WIDTH-1:0] res_pong [BATCH_SIZE-1:0][RANK_MAX-1:0];
 	reg  [DATA_WIDTH-1:0] res_sum  [BATCH_SIZE-1:0][RANK_MAX-1:0];
-	reg  [DATA_WIDTH-1:0] res_sum_r  [BATCH_SIZE-1:0][RANK_MAX-1:0];
-	reg  res_ud [RANK_MAX-1:0];
-	reg  res_ud_r [RANK_MAX-1:0];
+	//reg  [DATA_WIDTH-1:0] res_sum_r  [BATCH_SIZE-1:0][RANK_MAX-1:0];
+	reg  res_ud;// [RANK_MAX-1:0];
+	//reg  res_ud_r [RANK_MAX-1:0];
 
 	reg  [RANK_MAX*DATA_WIDTH-1:0] res_a1_sum;
 	wire [RANK_MAX*DATA_WIDTH-1:0] res_a1_sum_1;
 	reg  res_a1_valid;
-	reg  ping_i, ping, ping_r;
+	reg  ping_i, ping;// ping_r;
 	//reg  res_a1_ready;
 	logic mode_1;
 
@@ -200,9 +201,25 @@ module ttm_core #(
 		end else begin
 			res_ping_add <=  ping_i ? counter_burst_ai : counter_output_bi;
 			res_pong_add <= ~ping_i ? counter_burst_ai : counter_output_bi;
-			if (~procpause) begin
-				res_ping_add_r <= res_ping_add;
-				res_pong_add_r <= res_pong_add;
+			if (ping_i) begin
+				if (procvalid_r & ~procpause) begin
+					res_ping_add_r <= res_ping_add;
+				end
+				if (~ping) begin
+					res_ping_add_r <= 0;
+				end
+			end else begin
+				res_ping_add_r <= counter_output_bi;
+			end
+			if (~ping_i) begin
+				if (procvalid_r & ~procpause) begin
+					res_pong_add_r <= res_pong_add;
+				end
+				if (ping) begin
+					res_pong_add_r <= 0;
+				end
+			end else begin
+				res_pong_add_r <= counter_output_bi;
 			end
 		end
 	end
@@ -251,35 +268,34 @@ module ttm_core #(
 	
 			dist_mem_gen_w32 dist_mem_res_ping(
 				.a(res_ping_add_r), 
-				.d(ping_r ? prod_r[g][h] : res_sum[g][h]),
+				.d(ping ? prod_r[g][h] : res_sum[g][h]),
 				.dpra(res_ping_add),
 				.clk(clk), 
-				.we(ping_r ? (procvalid_r1 & ~procpause): res_ud_r[h]), 
+				.we(ping ? (procvalid_r1 & ~procpause): res_ud), 
 				.dpo(res_ping[g][h])
 			);
 
 			dist_mem_gen_w32 dist_mem_res_pong(
 				.a(res_pong_add_r), 
-				.d(~ping_r ? prod_r[g][h] : res_sum[g][h]), 
+				.d(~ping ? prod_r[g][h] : res_sum[g][h]), 
 				.dpra(res_pong_add),
 				.clk(clk), 
-				.we(~ping_r ? (procvalid_r1 & ~procpause): res_ud_r[h]), 
+				.we(~ping ? (procvalid_r1 & ~procpause): res_ud), 
 				.dpo(res_pong[g][h])
 			);
 
 			always_comb begin : proc_res_sum
-				// if (mode) begin
-				// 	// if (h < RANK_MAX - 1) begin
-				// 	// 	if (ping) begin
-				// 	// 		res_sum[g][h] = res_pong[g][h+1];
-				// 	// 	end else begin
-				// 	// 		res_sum[g][h] = res_ping[g][h+1];
-				// 	// 	end 
-				// 	// end else begin
-				// 	// 	res_sum[g][h] = 0;
-				// 	// end
-				
-				// end else begin
+				if (mode) begin
+					if (h < RANK_MAX - 1) begin
+						if (ping) begin
+							res_sum[g][h] = res_pong[g][h+1];
+						end else begin
+							res_sum[g][h] = res_ping[g][h+1];
+						end 
+					end else begin
+						res_sum[g][h] = 0;
+					end
+				end else begin
 					if (g < BATCH_SIZE / 2) begin
 						if (ping) begin
 							res_sum[g][h] = res_pong[2*g][h] + res_pong[2*g+1][h];
@@ -289,30 +305,37 @@ module ttm_core #(
 					end else begin
 						res_sum[g][h] = 0;
 					end
-				// end
-			end
-			always_ff @(posedge clk) begin : proc_res_sum_r
-				if (~procpause) begin
-					res_sum_r[g][h] <= res_sum[g][h];
 				end
 			end
+			// always_ff @(posedge clk) begin : proc_res_sum_r
+			// 	if (~procpause) begin
+			// 		res_sum_r[g][h] <= res_sum[g][h];
+			// 	end
+			// end
 		end // for (int h = 0; h < RANK_MAX; h = h + 1)
 	end // for (int g = 0; g < BATCH_SIZE; g = g + 1)
 
-	for (h = 0; h < RANK_MAX; h = h + 1) begin 
-		always_comb begin
-			if (mode) begin
-				res_ud[h] = 0;//(counter_output_a >= 0) & res.tready;
-			end else begin
-				res_ud[h] = (counter_output_a >= 0) & (counter_output_a < 5);
-			end
-		end
-		always_ff @(posedge clk or negedge rst_n) begin : proc_res_ud_r
-			if(~rst_n) begin
-				res_ud_r[h] <= 0;
-			end else if (~procpause) begin
-				res_ud_r[h] <= res_ud[h];
-			end
+	// for (h = 0; h < RANK_MAX; h = h + 1) begin 
+	// 	always_comb begin
+	// 		if (mode) begin
+	// 			res_ud[h] = (counter_output_a >= 0) & res.tready;
+	// 		end else begin
+	// 			res_ud[h] = (counter_output_a >= 0) & (counter_output_a < 5);
+	// 		end
+	// 	end
+	// 	always_ff @(posedge clk or negedge rst_n) begin : proc_res_ud_r
+	// 		if(~rst_n) begin
+	// 			res_ud_r[h] <= 0;
+	// 		end else if (~procpause) begin
+	// 			res_ud_r[h] <= res_ud[h];
+	// 		end
+	// 	end
+	// end
+	always_comb begin
+		if (mode) begin
+			res_ud = (counter_output_a >= 0) & res.tready;
+		end else begin
+			res_ud = (counter_output_a >= 0) & (counter_output_a < 5);
 		end
 	end
 
@@ -324,19 +347,19 @@ module ttm_core #(
 		ping_i = ping;
 		procpause_i = procpause;
 		if (counter_output_a < 0) begin
-			if (procvalid_r & proclast_r) begin
+			if (procvalid_r1 & proclast_r1) begin
 				counter_output_ai = 0;
 				ping_i = ~ping;
 			end
 		end else begin // (counter_output_a >= 0)
-			if (procvalid_r & proclast_r & ~outputlast) begin
+			if (procvalid_r1 & proclast_r1 & ~outputlast) begin
 				procpause_i = 1;
 			end 
 			if (mode) begin
 				if ((counter_output_b >= burst_size - 1) & res.tready) begin
 					counter_output_ai = counter_output_a + 1;
 					if (outputlast) begin
-						if (procpause | (procvalid_r & proclast_r)) begin
+						if (procpause | (procvalid_r1 & proclast_r1)) begin
 							procpause_i = 0;
 							ping_i = ~ping;
 							counter_output_ai = 0;
@@ -349,7 +372,7 @@ module ttm_core #(
 				if (counter_output_a < 5) begin
 					counter_output_ai = counter_output_a + 1;
 				end	else if (res.tready) begin // (counter_output_a == 5), outputlast
-					if (procpause | (procvalid_r & proclast_r)) begin
+					if (procpause | (procvalid_r1 & proclast_r1)) begin
 						procpause_i = 0;
 						ping_i = ~ping;
 						counter_output_ai = 0;
@@ -384,8 +407,8 @@ module ttm_core #(
 			ping             <= 1;
 			//procpause_r      <= 0;
 			procvalid_r1     <= 0;
-			
-			ping_r           <= 1;
+			proclast_r1      <= 0;
+			//ping_r           <= 1;
 		end else begin
 			counter_output_a <= counter_output_ai;
 			counter_output_b <= counter_output_bi;
@@ -394,7 +417,8 @@ module ttm_core #(
 			if (~procpause) begin
 				//procpause_r      <= procpause;
 				procvalid_r1     <= procvalid_r;
-				ping_r           <= ping;
+				proclast_r1      <= proclast_r;
+				//ping_r           <= ping;
 			end
 		end
 	end
@@ -433,17 +457,17 @@ module ttm_core #(
 					res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] <= 0;
 				end else if (mode) begin
 					if (ping) begin
-						res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] <= res_pong[g][counter_output_a];
+						res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] <= res_pong[g][0];
 					end else begin
-						res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] <= res_ping[g][counter_output_a];
+						res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] <= res_ping[g][0];
 					end
 				end else begin
-					res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] <= res_sum[0][g];
-					// if (ping) begin
-					// 	res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] = res_pong[0][g] + res_pong[1][g];
-					// end else begin
-					// 	res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] = res_ping[0][g] + res_ping[1][g];
-					// end
+					//res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] <= res_sum[0][g];
+					if (ping) begin
+						res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] <= res_pong[0][g];
+					end else begin
+						res.data[(g+1)*DATA_WIDTH-1:g*DATA_WIDTH] <= res_ping[0][g];
+					end
 				end // end else
 			end
 		end
